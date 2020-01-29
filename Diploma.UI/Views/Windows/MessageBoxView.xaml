@@ -68,12 +68,15 @@
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="10" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0"
-                           Grid.Column="0"
-                           Margin="5"
-                           Text="{Binding Text}"
-                           VerticalAlignment="Center"
-                           TextWrapping="Wrap" />
+                <ScrollViewer Grid.Row="0"
+                              Grid.Column="0"
+                              Margin="5"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                    <TextBlock Text="{Binding Text}"
+                               VerticalAlignment="Center"
+                               TextWrapping="Wrap" />
+                </ScrollViewer>
                 <Image Grid.Row="0"
                        Grid.Column="1"
                        Width="100"
