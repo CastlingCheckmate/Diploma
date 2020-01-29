@@ -51,12 +51,12 @@ namespace Diploma.Localization.Prebuild
             var filePath = $"{new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName}\\Diploma.Localization\\{InterfaceName}.cs";
             using (var localizationInterfaceWriter = new StreamWriter(new FileStream(filePath, FileMode.Create)))
             {
-                localizationInterfaceWriter.WriteLineWithTabs(0, "namespace Diploma.Localization");
-                localizationInterfaceWriter.WriteLineWithTabs(0, "{");
-                localizationInterfaceWriter.WriteLineWithTabs(1, string.Empty);
-                localizationInterfaceWriter.WriteLineWithTabs(1, $"public interface {InterfaceName}");
-                localizationInterfaceWriter.WriteLineWithTabs(1, "{");
-                localizationInterfaceWriter.WriteLineWithTabs(2, string.Empty);
+                localizationInterfaceWriter.WriteLineWithTabs(0, "namespace Diploma.Localization")
+                    .WriteLineWithTabs(0, "{")
+                    .WriteLineWithTabs(1, string.Empty)
+                    .WriteLineWithTabs(1, $"public interface {InterfaceName}")
+                    .WriteLineWithTabs(1, "{")
+                    .WriteLineWithTabs(2, string.Empty);
                 foreach (var item in localizationsUnion)
                 {
                     var propertyOrMethodName = item.Item1;
@@ -82,9 +82,9 @@ namespace Diploma.Localization.Prebuild
                     }
                     localizationInterfaceWriter.WriteLineWithTabs(2, string.Empty);
                 }
-                localizationInterfaceWriter.WriteLineWithTabs(1, "}");
-                localizationInterfaceWriter.WriteLine();
-                localizationInterfaceWriter.WriteWithTabs(0, "}");
+                localizationInterfaceWriter.WriteLineWithTabs(1, "}")
+                    .WriteLineEx()
+                    .WriteWithTabs(0, "}");
             }
         }
 
@@ -94,29 +94,29 @@ namespace Diploma.Localization.Prebuild
             var filePath = $"{new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName}\\Diploma.Localization\\{className}.cs";
             using (var localizationClassWriter = new StreamWriter(new FileStream(filePath, FileMode.Create)))
             {
-                localizationClassWriter.WriteLineWithTabs(0, "using System;");
-                localizationClassWriter.WriteLineWithTabs(0, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(0, "namespace Diploma.Localization");
-                localizationClassWriter.WriteLineWithTabs(0, "{");
-                localizationClassWriter.WriteLineWithTabs(1, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(1, $"internal sealed class {className} : {InterfaceName}");
-                localizationClassWriter.WriteLineWithTabs(1, "{");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, $"private static readonly Lazy<{className}> _instance;");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, $"static {className}()");
-                localizationClassWriter.WriteLineWithTabs(2, "{");
-                localizationClassWriter.WriteLineWithTabs(3, $"_instance = new Lazy<{className}>(() => new {className}());");
-                localizationClassWriter.WriteLineWithTabs(2, "}");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, $"public static {className} Instance =>");
-                localizationClassWriter.WriteLineWithTabs(3, "_instance.Value;");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, $"private {className}()");
-                localizationClassWriter.WriteLineWithTabs(2, "{");
-                localizationClassWriter.WriteLineWithTabs(3, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, "}");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
+                localizationClassWriter.WriteLineWithTabs(0, "using System;")
+                    .WriteLineWithTabs(0, string.Empty)
+                    .WriteLineWithTabs(0, "namespace Diploma.Localization")
+                    .WriteLineWithTabs(0, "{")
+                    .WriteLineWithTabs(1, string.Empty)
+                    .WriteLineWithTabs(1, $"internal sealed class {className} : {InterfaceName}")
+                    .WriteLineWithTabs(1, "{")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, $"private static readonly Lazy<{className}> _instance;")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, $"static {className}()")
+                    .WriteLineWithTabs(2, "{")
+                    .WriteLineWithTabs(3, $"_instance = new Lazy<{className}>(() => new {className}());")
+                    .WriteLineWithTabs(2, "}")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, $"public static {className} Instance =>")
+                    .WriteLineWithTabs(3, "_instance.Value;")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, $"private {className}()")
+                    .WriteLineWithTabs(2, "{")
+                    .WriteLineWithTabs(3, string.Empty)
+                    .WriteLineWithTabs(2, "}")
+                    .WriteLineWithTabs(2, string.Empty);
                 foreach (var item in localizationsUnion)
                 {
                     var propertyOrMethodName = item;
@@ -130,8 +130,8 @@ namespace Diploma.Localization.Prebuild
                     var placeholdersCount = GetPlaceholdersCount(fieldValue);
                     if (placeholdersCount == 0)
                     {
-                        localizationClassWriter.WriteLine(" =>");
-                        localizationClassWriter.WriteLineWithTabs(3, $"{fieldName};");
+                        localizationClassWriter.WriteLineEx(" =>")
+                            .WriteLineWithTabs(3, $"{fieldName};");
                     }
                     else
                     {
@@ -144,9 +144,9 @@ namespace Diploma.Localization.Prebuild
                                 localizationClassWriter.Write(", ");
                             }
                         }
-                        localizationClassWriter.WriteLine(")");
-                        localizationClassWriter.WriteLineWithTabs(2, "{");
-                        localizationClassWriter.WriteLineWithTabs(3, $"return string.Format({fieldName}");
+                        localizationClassWriter.WriteLineEx(")")
+                            .WriteLineWithTabs(2, "{")
+                            .WriteLineWithTabs(3, $"return string.Format({fieldName}");
                         for (var placeholder = 0; placeholder < placeholdersCount; placeholder++)
                         {
                             localizationClassWriter.WriteWithTabs(4, $", value{placeholder}");
@@ -163,9 +163,9 @@ namespace Diploma.Localization.Prebuild
                     }
                     localizationClassWriter.WriteLineWithTabs(2, string.Empty);
                 }
-                localizationClassWriter.WriteLineWithTabs(1, "}");
-                localizationClassWriter.WriteLine();
-                localizationClassWriter.WriteWithTabs(0, "}");
+                localizationClassWriter.WriteLineWithTabs(1, "}")
+                    .WriteLineEx()
+                    .WriteWithTabs(0, "}");
             }
         }
 
@@ -175,71 +175,71 @@ namespace Diploma.Localization.Prebuild
                 $"\\Diploma.Localization\\DiplomaLocalization.cs";
             using (var localizationClassWriter = new StreamWriter(new FileStream(filePath, FileMode.Create)))
             {
-                localizationClassWriter.WriteLineWithTabs(0, "using System;");
-                localizationClassWriter.WriteLineWithTabs(0, "using System.ComponentModel;");
-                localizationClassWriter.WriteLineWithTabs(0, "using System.Linq;");
-                localizationClassWriter.WriteLineWithTabs(0, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(0, "using Diploma.Localization.Languages;");
-                localizationClassWriter.WriteLineWithTabs(0, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(0, "namespace Diploma.Localization");
-                localizationClassWriter.WriteLineWithTabs(0, "{");
-                localizationClassWriter.WriteLineWithTabs(1, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(1, $"public sealed class DiplomaLocalization : {InterfaceName}, INotifyPropertyChanged");
-                localizationClassWriter.WriteLineWithTabs(1, "{");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, "private static readonly Lazy<DiplomaLocalization> _instance;");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, "static DiplomaLocalization()");
-                localizationClassWriter.WriteLineWithTabs(2, "{");
-                localizationClassWriter.WriteLineWithTabs(3, "_instance = new Lazy<DiplomaLocalization>(() => new DiplomaLocalization());");
-                localizationClassWriter.WriteLineWithTabs(2, "}");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, "public static DiplomaLocalization Instance =>");
-                localizationClassWriter.WriteLineWithTabs(3, "_instance.Value;");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, "private readonly string[] _localizationPropertiesNames;");
-                localizationClassWriter.WriteLineWithTabs(2, "private DiplomaLanguages _currentLanguage;");
-                localizationClassWriter.WriteLineWithTabs(2, "private IDiplomaLocalization _currentLocalization;");
-                localizationClassWriter.WriteLineWithTabs(2, "public event PropertyChangedEventHandler PropertyChanged;");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, "private DiplomaLocalization()");
-                localizationClassWriter.WriteLineWithTabs(2, "{");
-                localizationClassWriter.WriteLineWithTabs(3, "_localizationPropertiesNames = typeof(IDiplomaLocalization)");
-                localizationClassWriter.WriteLineWithTabs(4, ".GetProperties()");
-                localizationClassWriter.WriteLineWithTabs(4, ".Select(property => property.Name)");
-                localizationClassWriter.WriteLineWithTabs(4, ".ToArray();");
-                localizationClassWriter.WriteLineWithTabs(3, "CurrentLanguage = DiplomaLanguages.Russian;");
-                localizationClassWriter.WriteLineWithTabs(2, "}");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(2, "public DiplomaLanguages CurrentLanguage");
-                localizationClassWriter.WriteLineWithTabs(2, "{");
-                localizationClassWriter.WriteLineWithTabs(3, "get =>");
-                localizationClassWriter.WriteLineWithTabs(4, "_currentLanguage;");
-                localizationClassWriter.WriteLineWithTabs(3, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(3, "set");
-                localizationClassWriter.WriteLineWithTabs(3, "{");
-                localizationClassWriter.WriteLineWithTabs(4, "if (CurrentLanguage == value)");
-                localizationClassWriter.WriteLineWithTabs(4, "{");
-                localizationClassWriter.WriteLineWithTabs(5, "return;");
-                localizationClassWriter.WriteLineWithTabs(4, "}");
-                localizationClassWriter.WriteLineWithTabs(4, "if (!Enum.IsDefined(typeof(DiplomaLanguages), value))");
-                localizationClassWriter.WriteLineWithTabs(4, "{");
-                localizationClassWriter.WriteLineWithTabs(5, "return;");
-                localizationClassWriter.WriteLineWithTabs(4, "}");
-                localizationClassWriter.WriteLineWithTabs(4, "_currentLanguage = value;");
-                localizationClassWriter.WriteLineWithTabs(4, "switch (CurrentLanguage)");
-                localizationClassWriter.WriteLineWithTabs(4, "{");
+                localizationClassWriter.WriteLineWithTabs(0, "using System;")
+                    .WriteLineWithTabs(0, "using System.ComponentModel;")
+                    .WriteLineWithTabs(0, "using System.Linq;")
+                    .WriteLineWithTabs(0, string.Empty)
+                    .WriteLineWithTabs(0, "using Diploma.Localization.Languages;")
+                    .WriteLineWithTabs(0, string.Empty)
+                    .WriteLineWithTabs(0, "namespace Diploma.Localization")
+                    .WriteLineWithTabs(0, "{")
+                    .WriteLineWithTabs(1, string.Empty)
+                    .WriteLineWithTabs(1, $"public sealed class DiplomaLocalization : {InterfaceName}, INotifyPropertyChanged")
+                    .WriteLineWithTabs(1, "{")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, "private static readonly Lazy<DiplomaLocalization> _instance;")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, "static DiplomaLocalization()")
+                    .WriteLineWithTabs(2, "{")
+                    .WriteLineWithTabs(3, "_instance = new Lazy<DiplomaLocalization>(() => new DiplomaLocalization());")
+                    .WriteLineWithTabs(2, "}")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, "public static DiplomaLocalization Instance =>")
+                    .WriteLineWithTabs(3, "_instance.Value;")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, "private readonly string[] _localizationPropertiesNames;")
+                    .WriteLineWithTabs(2, "private DiplomaLanguages _currentLanguage;")
+                    .WriteLineWithTabs(2, "private IDiplomaLocalization _currentLocalization;")
+                    .WriteLineWithTabs(2, "public event PropertyChangedEventHandler PropertyChanged;")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, "private DiplomaLocalization()")
+                    .WriteLineWithTabs(2, "{")
+                    .WriteLineWithTabs(3, "_localizationPropertiesNames = typeof(IDiplomaLocalization)")
+                    .WriteLineWithTabs(4, ".GetProperties()")
+                    .WriteLineWithTabs(4, ".Select(property => property.Name)")
+                    .WriteLineWithTabs(4, ".ToArray();")
+                    .WriteLineWithTabs(3, "CurrentLanguage = DiplomaLanguages.Russian;")
+                    .WriteLineWithTabs(2, "}")
+                    .WriteLineWithTabs(2, string.Empty)
+                    .WriteLineWithTabs(2, "public DiplomaLanguages CurrentLanguage")
+                    .WriteLineWithTabs(2, "{")
+                    .WriteLineWithTabs(3, "get =>")
+                    .WriteLineWithTabs(4, "_currentLanguage;")
+                    .WriteLineWithTabs(3, string.Empty)
+                    .WriteLineWithTabs(3, "set")
+                    .WriteLineWithTabs(3, "{")
+                    .WriteLineWithTabs(4, "if (CurrentLanguage == value)")
+                    .WriteLineWithTabs(4, "{")
+                    .WriteLineWithTabs(5, "return;")
+                    .WriteLineWithTabs(4, "}")
+                    .WriteLineWithTabs(4, "if (!Enum.IsDefined(typeof(DiplomaLanguages), value))")
+                    .WriteLineWithTabs(4, "{")
+                    .WriteLineWithTabs(5, "return;")
+                    .WriteLineWithTabs(4, "}")
+                    .WriteLineWithTabs(4, "_currentLanguage = value;")
+                    .WriteLineWithTabs(4, "switch (CurrentLanguage)")
+                    .WriteLineWithTabs(4, "{");
                 foreach (DiplomaLanguages language in Enum.GetValues(typeof(DiplomaLanguages)))
                 {
-                    localizationClassWriter.WriteLineWithTabs(5, $"case DiplomaLanguages.{LanguagesToStringConverter.Convert(language)}:");
-                    localizationClassWriter.WriteLineWithTabs(6, $"_currentLocalization = Diploma{LanguagesToStringConverter.Convert(language, false)}Localization.Instance;");
-                    localizationClassWriter.WriteLineWithTabs(6, "break;");
+                    localizationClassWriter.WriteLineWithTabs(5, $"case DiplomaLanguages.{LanguagesToStringConverter.Convert(language)}:")
+                        .WriteLineWithTabs(6, $"_currentLocalization = Diploma{LanguagesToStringConverter.Convert(language, false)}Localization.Instance;")
+                        .WriteLineWithTabs(6, "break;");
                 }
-                localizationClassWriter.WriteLineWithTabs(4, "}");
-                localizationClassWriter.WriteLineWithTabs(4, "NotifyPropertyChanged(_localizationPropertiesNames);");
-                localizationClassWriter.WriteLineWithTabs(3, "}");
-                localizationClassWriter.WriteLineWithTabs(2, "}");
-                localizationClassWriter.WriteLineWithTabs(2, string.Empty);
+                localizationClassWriter.WriteLineWithTabs(4, "}")
+                    .WriteLineWithTabs(4, "NotifyPropertyChanged(_localizationPropertiesNames);")
+                    .WriteLineWithTabs(3, "}")
+                    .WriteLineWithTabs(2, "}")
+                    .WriteLineWithTabs(2, string.Empty);
                 foreach (var item in localization)
                 {
                     var propertyOrMethodName = item.Item1;
@@ -248,8 +248,8 @@ namespace Diploma.Localization.Prebuild
                     var placeholdersCount = GetPlaceholdersCount(propertyOrMethodValue);
                     if (placeholdersCount == 0)
                     {
-                        localizationClassWriter.WriteLine(" =>");
-                        localizationClassWriter.WriteLineWithTabs(3, $"_currentLocalization.{propertyOrMethodName};");
+                        localizationClassWriter.WriteLineEx(" =>")
+                            .WriteLineWithTabs(3, $"_currentLocalization.{propertyOrMethodName};");
                     }
                     else
                     {
@@ -262,9 +262,9 @@ namespace Diploma.Localization.Prebuild
                                 localizationClassWriter.Write(", ");
                             }
                         }
-                        localizationClassWriter.WriteLine(")");
-                        localizationClassWriter.WriteLineWithTabs(2, "{");
-                        localizationClassWriter.WriteLineWithTabs(3, $"return _currentLocalization.{propertyOrMethodName}(");
+                        localizationClassWriter.WriteLineEx(")")
+                            .WriteLineWithTabs(2, "{")
+                            .WriteLineWithTabs(3, $"return _currentLocalization.{propertyOrMethodName}(");
                         for (var placeholder = 0; placeholder < placeholdersCount; placeholder++)
                         {
                             localizationClassWriter.WriteWithTabs(4, $"value{placeholder}");
@@ -281,17 +281,17 @@ namespace Diploma.Localization.Prebuild
                     }
                     localizationClassWriter.WriteLineWithTabs(2, string.Empty);
                 }
-                localizationClassWriter.WriteLineWithTabs(2, "private void NotifyPropertyChanged(params string[] propertiesNames)");
-                localizationClassWriter.WriteLineWithTabs(2, "{");
-                localizationClassWriter.WriteLineWithTabs(3, "foreach (var propertyName in propertiesNames)");
-                localizationClassWriter.WriteLineWithTabs(3, "{");
-                localizationClassWriter.WriteLineWithTabs(4, "PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));");
-                localizationClassWriter.WriteLineWithTabs(3, "}");
-                localizationClassWriter.WriteLineWithTabs(2, "}");
-                localizationClassWriter.WriteLineWithTabs(1, string.Empty);
-                localizationClassWriter.WriteLineWithTabs(1, "}");
-                localizationClassWriter.WriteLine();
-                localizationClassWriter.WriteWithTabs(0, "}");
+                localizationClassWriter.WriteLineWithTabs(2, "private void NotifyPropertyChanged(params string[] propertiesNames)")
+                    .WriteLineWithTabs(2, "{")
+                    .WriteLineWithTabs(3, "foreach (var propertyName in propertiesNames)")
+                    .WriteLineWithTabs(3, "{")
+                    .WriteLineWithTabs(4, "PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));")
+                    .WriteLineWithTabs(3, "}")
+                    .WriteLineWithTabs(2, "}")
+                    .WriteLineWithTabs(1, string.Empty)
+                    .WriteLineWithTabs(1, "}")
+                    .WriteLineEx()
+                    .WriteWithTabs(0, "}");
             }
         }
 
