@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Diploma.UI.Views.Controls.NumericUpDown"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True">
+        <DockPanel DockPanel.Dock="Right">
+            <Button DockPanel.Dock="Top"
+                    Style="{StaticResource NumericUpDownButtonStyle}"
+                    Command="{Binding IncrementCommand}"
+                    Padding="1">
+                <Polygon Points="0,0 6,0 3,5.5"
+                         Stroke="Black"
+                         Fill="Black">
+                    <Polygon.RenderTransform>
+                        <RotateTransform CenterX="3" CenterY="3" Angle="180" />
+                    </Polygon.RenderTransform>
+                </Polygon>
+            </Button>
+            <Button DockPanel.Dock="Bottom"
+                    Style="{StaticResource NumericUpDownButtonStyle}"
+                    Command="{Binding DecrementCommand}"
+                    Margin="0,0,0,0"
+                    Padding="1">
+                <Polygon Points="0,0 6,0 3,5.5"
+                         Stroke="Black"
+                         Fill="Black"/>
+            </Button>
+        </DockPanel>
+        <TextBox DockPanel.Dock="Left"
+                 Text="{Binding Value}"
+                 TextAlignment="Center"
+                 IsReadOnly="True"
+                 HorizontalAlignment="Stretch"
+                 BorderBrush="Black"
+                 Margin="0,0,-1,0"
+                 Style="{StaticResource TextBoxWithBlackBorderStyle}" />
+    </DockPanel>
+</UserControl>

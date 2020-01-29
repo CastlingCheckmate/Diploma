@@ -1,0 +1,96 @@
+﻿<Window x:Class="Diploma.UI.Views.Windows.LanguageSelectionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:localization="clr-namespace:Diploma.Localization;assembly=Diploma.Localization"
+        xmlns:languages="clr-namespace:Diploma.Localization.Languages;assembly=Diploma.Localization.Languages"
+        mc:Ignorable="d"
+        Width="200"
+        Height="200"
+        Style="{StaticResource DiplomaWindowStyle}"
+        Title="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Language}"
+        WindowStartupLocation="{StaticResource DiplomaWindowStartupLocation}"
+        WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc"
+                    Command="{Binding CancelCommand}" />
+    </Window.InputBindings>
+    <Border BorderThickness="1"
+            BorderBrush="Black">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  Background="Gray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Style="{StaticResource DiplomaWindowHeaderStyle}"
+                           Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=LanguageSelectionHeader}" />
+                <Image Grid.Column="1"
+                       Margin="1"
+                       Source="{StaticResource CloseButton}">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding CancelCommand}" />
+                    </Image.InputBindings>
+                </Image>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=SelectLanguage}" />
+                <ComboBox x:Name="languagesComboBox"
+                          Style="{StaticResource ComboBoxFlatStyle}"
+                          Grid.Row="1"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="3"
+                          SelectedValue="{Binding SelectedLanguage, Mode=TwoWay}"
+                          SelectedValuePath="Tag">
+                    <ComboBoxItem Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=EnglishLanguage}"
+                                  Tag="{x:Static languages:DiplomaLanguages.English}"
+                                  HorizontalAlignment="Center" />
+                    <ComboBoxItem Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=RussianLanguage}"
+                                  Tag="{x:Static languages:DiplomaLanguages.Russian}"
+                                  HorizontalAlignment="Center" />
+                </ComboBox>
+                <Button Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="3"
+                        Style="{StaticResource ButtonFlatStyle}"
+                        Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=OK}"
+                        Command="{Binding ApplyLanguageChangeCommand}"
+                        IsEnabled="{Binding IsLanguageChanged}" />
+                <Button Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="3"
+                        Style="{StaticResource ButtonFlatStyle}"
+                        Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Cancel}"
+                        Command="{Binding CancelCommand}" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

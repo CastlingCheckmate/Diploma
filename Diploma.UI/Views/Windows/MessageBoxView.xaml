@@ -1,0 +1,108 @@
+﻿<Window x:Class="Diploma.UI.Views.Windows.MessageBoxView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:Diploma.UI.Converters"
+        xmlns:localization="clr-namespace:Diploma.Localization;assembly=Diploma.Localization"
+        mc:Ignorable="d"
+        Style="{StaticResource DiplomaWindowStyle}"
+        Title="{Binding Header}"
+        Height="200"
+        Width="500"
+        WindowStartupLocation="{StaticResource DiplomaWindowStartupLocation}"
+        WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc"
+                    Command="{Binding CloseButtonCommand}" />
+        <KeyBinding Key="Backspace"
+                    Command="{Binding NoButtonCommand}" />
+        <KeyBinding Key="Enter"
+                    Command="{Binding OkButtonOrYesButtonMultiCommand}" />
+    </Window.InputBindings>
+    <Border BorderThickness="1"
+            BorderBrush="Black">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  Background="Gray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0"
+                       Margin="1"
+                       Style="{StaticResource MessageBoxIconStyle}" />
+                <TextBlock Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Style="{StaticResource DiplomaWindowHeaderStyle}"
+                           Text="{Binding Header}" />
+                <Image Grid.Column="2"
+                       Margin="1"
+                       Source="{StaticResource CloseButton}">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding CloseButtonCommand}" />
+                    </Image.InputBindings>
+                </Image>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="10" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Margin="5"
+                           Text="{Binding Text}"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap" />
+                <Image Grid.Row="0"
+                       Grid.Column="1"
+                       Width="100"
+                       Height="100"
+                       Stretch="None"
+                       Style="{StaticResource MessageBoxImageStyle}" />
+                <Grid Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3">
+                    <DockPanel LastChildFill="False">
+                        <Button Style="{StaticResource MessageBoxButtonStyle}"
+                                Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=OK}"
+                                Visibility="{Binding IsOkButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Command="{Binding OkButtonCommand}" />
+                        <Button Style="{StaticResource MessageBoxButtonStyle}"
+                                Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Cancel}"
+                                Visibility="{Binding IsCancelButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Command="{Binding CancelButtonCommand}" />
+                        <Button Style="{StaticResource MessageBoxButtonStyle}"
+                                Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Yes}"
+                                Visibility="{Binding IsYesButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Command="{Binding YesButtonCommand}" />
+                        <Button Style="{StaticResource MessageBoxButtonStyle}"
+                                Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=No}"
+                                Visibility="{Binding IsNoButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Command="{Binding NoButtonCommand}" />
+                    </DockPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

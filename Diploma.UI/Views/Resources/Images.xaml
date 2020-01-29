@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <BitmapImage x:Key="MessageBoxError"
+                 UriSource="/Diploma.UI;component/Resources/ErrorSign.bmp" />
+    
+    <BitmapImage x:Key="MessageBoxInformation"
+                 UriSource="/Diploma.UI;component/Resources/InformationSign.bmp" />
+    
+    <BitmapImage x:Key="MessageBoxQuestion"
+                 UriSource="/Diploma.UI;component/Resources/QuestionSign.bmp" />
+    
+    <BitmapImage x:Key="MessageBoxWarning"
+                 UriSource="/Diploma.UI;component/Resources/WarningSign.bmp" />
+    
+    <BitmapImage x:Key="HelpButton"
+                 UriSource="/Diploma.UI;component/Resources/HelpButton.bmp" />
+    
+    <BitmapImage x:Key="MinimizeButton"
+                 UriSource="/Diploma.UI;component/Resources/MinimizeButton.bmp" />
+    
+    <BitmapImage x:Key="CloseButton"
+                 UriSource="/Diploma.UI;component/Resources/CloseButton.bmp" />
+    
+    <BitmapImage x:Key="MessageBoxErrorIcon"
+                 UriSource="/Diploma.UI;component/Resources/ErrorSignIcon.bmp" />
+    
+    <BitmapImage x:Key="MessageBoxInformationIcon"
+                 UriSource="/Diploma.UI;component/Resources/InformationSignIcon.bmp" />
+    
+    <BitmapImage x:Key="MessageBoxQuestionIcon"
+                 UriSource="/Diploma.UI;component/Resources/QuestionSignIcon.bmp" />
+    
+    <BitmapImage x:Key="MessageBoxWarningIcon"
+                 UriSource="/Diploma.UI;component/Resources/WarningSignIcon.bmp" />
+    
+    <BitmapImage x:Key="DiplomaIcon"
+                 UriSource="/Diploma.UI;component/Resources/DiplomaIcon.bmp" />
+    
+    
+
+</ResourceDictionary>

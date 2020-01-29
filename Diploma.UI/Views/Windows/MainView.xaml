@@ -1,0 +1,152 @@
+﻿<Window x:Class="Diploma.UI.Views.Windows.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"   
+        xmlns:controls="clr-namespace:Diploma.UI.Views.Controls"
+        xmlns:converters="clr-namespace:Diploma.UI.Converters"
+        xmlns:localization="clr-namespace:Diploma.Localization;assembly=Diploma.Localization"
+        mc:Ignorable="d"
+        Style="{StaticResource DiplomaWindowStyle}"
+        Title="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=MainViewHeader}"
+        WindowStartupLocation="{StaticResource DiplomaWindowStartupLocation}"
+        WindowState="{Binding State}"
+        WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:InversedBoolToVisibilityConverter x:Key="InversedBoolToVisibilityConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc"
+                    Command="{Binding QuitCommand}" />
+        <KeyBinding Key="F1"
+                    Command="{Binding ShowHelpCommand}" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              Background="Gray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0"
+                   Margin="1"
+                   Source="{StaticResource DiplomaIcon}" />
+            <TextBlock Grid.Column="0"
+                       Grid.ColumnSpan="5"
+                       Style="{StaticResource DiplomaWindowHeaderStyle}"
+                       Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=DiplomaTitle}" />
+            <Image Grid.Column="2"
+                   Margin="1"
+                   Source="{StaticResource HelpButton}"
+                   ToolTip="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=HelpButtonToolTip}">
+                <Image.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding ShowHelpCommand}" />
+                </Image.InputBindings>
+            </Image>
+            <Image Grid.Column="3"
+                   Margin="1"
+                   Source="{StaticResource MinimizeButton}"
+                   ToolTip="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=MinimizeButtonToolTip}">
+                <Image.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding MinimizeCommand}" />
+                </Image.InputBindings>
+            </Image>
+            <Image Grid.Column="4"
+                   Margin="1"
+                   Source="{StaticResource CloseButton}"
+                   ToolTip="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=CloseButtonToolTip}">
+                <Image.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding QuitCommand}" />
+                </Image.InputBindings>
+            </Image>
+        </Grid>
+        <Menu Grid.Row="1"
+              Background="LightGray">
+            <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=FileMenuItem}"
+                      Visibility="{Binding Settings.FileMenuItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=LanguageSelectionMenuItem}"
+                          Visibility="{Binding Settings.LanguageSelectionItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Command="{Binding ShowLanguageSelectionCommand}" />
+                <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=HelpMenuItem}"
+                          Visibility="{Binding Settings.HelpItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Command="{Binding ShowHelpCommand}" />
+                <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=AboutMenuItem}"
+                          Visibility="{Binding Settings.AboutItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Command="{Binding ShowAboutCommand}" />
+                <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=QuitMenuItem}"
+                          Visibility="{Binding Settings.QuitItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Command="{Binding QuitCommand}" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="2"
+              Margin="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="3,0,0,0"
+                       Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=SimplexVerticesCount}"
+                       VerticalAlignment="Center" />
+            <controls:NumericUpDown Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    DataContext="{Binding SimplexVerticesCountDataContext}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="2"
+                       Margin="15,0,0,0"
+                       Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=VerticesGradesVector}"
+                       VerticalAlignment="Center" />
+            <!-- TODO: TextBox adorner -->
+            <TextBox Grid.Row="0"
+                     Grid.Column="3"
+                     Margin="5,0,0,0"
+                     VerticalContentAlignment="Center"
+                     BorderBrush="Black"
+                     Style="{StaticResource TextBoxWithBlackBorderStyle}"
+                     Text="{Binding VectorString, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Row="0"
+                    Grid.Column="4"
+                    Margin="5,0,3,0"
+                    Width="Auto"
+                    Style="{StaticResource ButtonFlatStyle}"
+                    Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Restore}"
+                    Command="{Binding RestoreCommand}" />
+            <controls:HypergraphView Grid.Row="1"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="5"
+                                     Margin="3"
+                                     Hypergraph="{Binding Hypergraph}" />
+        </Grid>
+        <StatusBar Grid.Row="3"
+                   VerticalAlignment="Bottom">
+            
+        </StatusBar>
+    </Grid>
+</Window>

@@ -1,0 +1,44 @@
+﻿<records>
+  <!-- Common -->
+  <record name="DiplomaTitle">Редукционный алгоритм восстановления n-комплексов по вектору степеней вершин</record>
+  <!-- Main view -->
+  <record name="MainViewHeader">Диплом</record>
+  <record name="HelpButtonToolTip">Помощь [F1]</record>
+  <record name="MinimizeButtonToolTip">Свернуть [Shift + _]</record>
+  <record name="CloseButtonToolTip">Выход [Esc]</record>
+  <record name="SimplexVerticesCount">Количество вершин симплекса:</record>
+  <record name="VerticesGradesVector">Вектор степеней вершин:</record>
+  <record name="Restore">Восстановить</record>
+  <record name="VerticesGradesVectorCantBeRestored">Вектор степеней вершин не может быть реализован в {0}-комплекс!</record>
+  <!-- Menu -->
+  <record name="Menu">Меню</record>
+  <record name="FileMenuItem">Файл</record>
+  <record name="LanguageSelectionMenuItem">Выбор языка</record>
+  <record name="HelpMenuItem">Помощь</record>
+  <record name="AboutMenuItem">О программе</record>
+  <record name="QuitMenuItem">Выход</record>
+  <!-- Message box -->
+  <record name="OK">OK</record>
+  <record name="Cancel">Отмена</record>
+  <record name="Yes">Да</record>
+  <record name="No">Нет</record>
+  <record name="Error">Ошибка</record>
+  <record name="Information">Информация</record>
+  <record name="Warning">Предупреждение</record>
+  <!-- Language selection -->
+  <record name="Language">Язык</record>
+  <record name="LanguageSelectionHeader">Выбор языка</record>
+  <record name="SelectLanguage">Выберите язык</record>
+  <record name="EnglishLanguage">Английский</record>
+  <record name="RussianLanguage">Русский</record>
+  <record name="LanguageChangedSuccessfully">Язык успешно изменён!</record>
+  <!-- Help -->
+  <record name="HelpHeader">Diploma::Помощь</record>
+  <record name="HelpLines"></record>
+  <!-- About -->
+  <record name="AboutHeader">Diploma::О программе</record>
+  <record name="AboutLines"></record>
+  <!-- Quit -->
+  <record name="QuitHeader">Diploma::Выход</record>
+  <record name="QuitMessage">Вы действительно хотите выйти?</record>
+</records>

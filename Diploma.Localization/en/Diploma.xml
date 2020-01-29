@@ -1,0 +1,44 @@
+﻿<records>
+  <!-- Common -->
+  <record name="DiplomaTitle">(en)Редукционный алгоритм восстановления n-комплексов по вектору степеней вершин</record>
+  <!-- Main view -->
+  <record name="MainViewHeader">Diploma</record>
+  <record name="HelpButtonToolTip">Help [F1]</record>
+  <record name="MinimizeButtonToolTip">Minimize [Shift + _]</record>
+  <record name="CloseButtonToolTip">Quit [Esc]</record>
+  <record name="SimplexVerticesCount">Simplex vertices count:</record>
+  <record name="VerticesGradesVector">Vertices grades vector:</record>
+  <record name="Restore">Restore</record>
+  <record name="VerticesGradesVectorCantBeRestored">Vertices grades vector can't be restored into {0}-complex!</record>
+  <!-- Menu -->
+  <record name="Menu">Menu</record>
+  <record name="FileMenuItem">File</record>
+  <record name="LanguageSelectionMenuItem">Language selection</record>
+  <record name="HelpMenuItem">Help</record>
+  <record name="AboutMenuItem">About</record>
+  <record name="QuitMenuItem">Quit</record>
+  <!-- Message box -->
+  <record name="OK">OK</record>
+  <record name="Cancel">Cancel</record>
+  <record name="Yes">Yes</record>
+  <record name="No">No</record>
+  <record name="Error">Error</record>
+  <record name="Information">Information</record>
+  <record name="Warning">Warning</record>
+  <!-- Language selection -->
+  <record name="Language">Language</record>
+  <record name="LanguageSelectionHeader">Language selection</record>
+  <record name="SelectLanguage">Select language</record>
+  <record name="EnglishLanguage">English</record>
+  <record name="RussianLanguage">Russian</record>
+  <record name="LanguageChangedSuccessfully">Language changed successfully!</record>
+  <!-- Help -->
+  <record name="HelpHeader">Diploma::Help</record>
+  <record name="HelpLines"></record>
+  <!-- About -->
+  <record name="AboutHeader">Diploma::About</record>
+  <record name="AboutLines"></record>
+  <!-- Quit -->
+  <record name="QuitHeader">Diploma::Quit</record>
+  <record name="QuitMessage">Are You really want to quit?</record>
+</records>
