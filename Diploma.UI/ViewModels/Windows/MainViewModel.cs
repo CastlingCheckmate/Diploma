@@ -166,7 +166,7 @@ namespace Diploma.UI.ViewModels.Windows
             if (restoredHypergraph is null)
             {
                 MessageBox.Show(MessageBoxTypes.Error, DiplomaLocalization.Instance.Error,
-                    DiplomaLocalization.Instance.VerticesGradesVectorCantBeRestored(SimplexVerticesCountDataContext.Value), MessageBoxButtons.Ok);
+                    DiplomaLocalization.Instance.VerticesGradesVectorCantBeRestored(SimplexVerticesCountDataContext.Value - 1), MessageBoxButtons.Ok);
                 return;
             }
             Hypergraph = restoredHypergraph;
