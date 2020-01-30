@@ -6,6 +6,7 @@ using Diploma.Extensions;
 namespace Diploma.Hypergraph
 {
 
+    // TODO: DD
     [DebuggerDisplay("")]
     public sealed class Hypergraph
     {

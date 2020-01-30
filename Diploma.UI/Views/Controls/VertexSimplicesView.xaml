@@ -4,11 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             Width="200"
-             Height="200">
-    <Path Fill="Transparent" Stroke="Black">
-        <Path.Data>
-            <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
-        </Path.Data>
-    </Path>
+             Width="202"
+             Height="202">
+    <Canvas>
+        <Path Fill="Transparent"
+              Stroke="Black">
+            <Path.Data>
+                <EllipseGeometry Center="101,101"
+                                 RadiusX="100"
+                                 RadiusY="100" />
+            </Path.Data>
+        </Path>
+    </Canvas>
 </UserControl>

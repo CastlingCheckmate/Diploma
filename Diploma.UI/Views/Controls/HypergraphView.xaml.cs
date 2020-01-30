@@ -4,6 +4,7 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Diploma.UI.Views.Controls
@@ -27,6 +28,10 @@ namespace Diploma.UI.Views.Controls
                     foreach (var vertex in _canvas.Children.OfType<Ellipse>().ToArray())
                     {
                         (vertex.Tag as Timer).Dispose();
+                        if (_vertexSimplicesViews.ContainsKey(vertex))
+                        {
+                            (_vertexSimplicesViews[vertex].Tag as Timer).Dispose();
+                        }
                     }
                 };
             };
@@ -49,12 +54,34 @@ namespace Diploma.UI.Views.Controls
             {
                 (vertex.Tag as Timer).Dispose();
                 _canvas.Children.Remove(vertex);
-                _vertexSimplicesViews.Remove(vertex);
+                if (_vertexSimplicesViews.Keys.Contains(vertex))
+                {
+                    (_vertexSimplicesViews[vertex].Tag as Timer).Dispose();
+                    _vertexSimplicesViews.Remove(vertex);
+                }
+            }
+            foreach (var simplex in _canvas.Children.OfType<Polyline>().ToArray())
+            {
+                _canvas.Children.Remove(simplex);
             }
             if (Hypergraph is null)
             {
                 return;
             }
+
+            // simplices
+            foreach (var simplex in Hypergraph.Simplices)
+            {
+                var simplexView = new Polyline();
+                simplexView.Stroke = Brushes.Black;
+                for (var i = 0; i < simplex.Vertices.Length; i++)
+                {
+                    simplexView.Points.Add(GetVertexCenterPoint(simplex.Vertices[i].Id));
+                }
+                _canvas.Children.Add(simplexView);
+            }
+
+            // vertices
             for (var i = 0; i < Hypergraph.Vertices.Length; i++)
             {
                 var vertexModel = Hypergraph.Vertices[i];
@@ -63,49 +90,61 @@ namespace Diploma.UI.Views.Controls
                 {
                     Width = VertexDiameter
                     , Height = VertexDiameter
-                    , Fill = System.Windows.Media.Brushes.Black
+                    , Fill = Brushes.Black
                     , Margin = new Thickness(vertexCenterPoint.X - VertexDiameter / 2, vertexCenterPoint.Y - VertexDiameter / 2, 0, 0)
                     , Tag = new Timer(500)
                 };
-                vertexView.MouseEnter += (sender, eventArgs) =>
+                var timer = vertexView.Tag as Timer;
+                timer.Elapsed += async (_sender, _eventArgs) =>
                 {
-                    var timer = vertexView.Tag as Timer;
-                    vertexView.Fill = System.Windows.Media.Brushes.Gray;
-                    timer.Elapsed += async (_sender, _eventArgs) =>
+                    timer.Stop();
+                    await Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        timer.Stop();
-                        await Dispatcher.BeginInvoke(new Action(() =>
+                        if (!_vertexSimplicesViews.ContainsKey(vertexView))
                         {
-                            if (!_vertexSimplicesViews.ContainsKey(vertexView))
+                            var vertexSimplicesView = new VertexSimplicesView()
                             {
-                                var vertexSimplicesView = new VertexSimplicesView()
-                                {
-                                    Margin = new Thickness(vertexCenterPoint.X - 100, vertexCenterPoint.Y - 100, 0, 0)
-                                };
-                                vertexSimplicesView.MouseLeave += (__sender, __eventArgs) =>
+                                Margin = new Thickness(vertexCenterPoint.X - 100, vertexCenterPoint.Y - 100, 0, 0)
+                            };
+                            var simplicesViewTimer = (Timer)(vertexSimplicesView.Tag = new Timer(1000));
+                            simplicesViewTimer.Elapsed += async (__sender, __eventArgs) =>
+                            {
+                                await Dispatcher.BeginInvoke(new Action(() =>
                                 {
                                     vertexSimplicesView.Visibility = Visibility.Collapsed;
-                                };
-                                _vertexSimplicesViews.Add(vertexView, vertexSimplicesView);
-                                _canvas.Children.Add(vertexSimplicesView);
-                            }
-                            else
+                                }));
+                            };
+                            vertexSimplicesView.MouseEnter += (__sender, __eventArgs) =>
                             {
-                                _vertexSimplicesViews[vertexView].Visibility = Visibility.Visible;
-                            }
-                        }));
-                    };
+                                simplicesViewTimer.Stop();
+                            };
+                            vertexSimplicesView.MouseLeave += (__sender, __eventArgs) =>
+                            {
+                                simplicesViewTimer.Start();
+                            };
+                            _vertexSimplicesViews.Add(vertexView, vertexSimplicesView);
+                            _canvas.Children.Add(vertexSimplicesView);
+                        }
+                        else
+                        {
+                            _vertexSimplicesViews[vertexView].Visibility = Visibility.Visible;
+                        }
+                    }));
+                };
+                vertexView.MouseEnter += (sender, eventArgs) =>
+                {
+                    vertexView.Fill = Brushes.Gray;
                     timer.Start();
                 };
                 vertexView.MouseLeave += (sender, eventArgs) =>
                 {
-                    (vertexView.Tag as Timer).Stop();
-                    vertexView.Fill = System.Windows.Media.Brushes.Black;
+                    timer.Stop();
+                    vertexView.Fill = Brushes.Black;
                 };
                 _canvas.Children.Add(vertexView);
             }
 
-            System.Drawing.Point GetVertexCenterPoint(int vertexIndex)
+            Point GetVertexCenterPoint(int vertexIndex)
             {
                 var radius = (int)(0.75 * ActualHeight / 2);
                 var centerPoint = new System.Drawing.Point((int)ActualWidth / 2, (int)ActualHeight / 2);
@@ -116,7 +155,7 @@ namespace Diploma.UI.Views.Controls
                     rotateMatrix.RotateAt(angle, centerPoint);
                     rotateMatrix.TransformPoints(vertexPoint);
                 }
-                return vertexPoint[0];
+                return new Point(vertexPoint[0].X, vertexPoint[0].Y);
             }
         }
 

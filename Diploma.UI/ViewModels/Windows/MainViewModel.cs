@@ -170,8 +170,6 @@ namespace Diploma.UI.ViewModels.Windows
                 return;
             }
             Hypergraph = restoredHypergraph;
-            var simplices = $"{string.Join($",{Environment.NewLine}", Hypergraph.Simplices.Select(simplex => $"({string.Join(", ", simplex.Vertices.Select(vertex => vertex.Id.ToString()).ToArray())})"))}.";
-            MessageBox.Show(MessageBoxTypes.Information, DiplomaLocalization.Instance.Information, simplices, MessageBoxButtons.Ok);
         }
 
     }
