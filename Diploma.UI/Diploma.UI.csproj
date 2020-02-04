@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Auxiliary\Commands\RelayMultiCommand.cs" />
+    <Compile Include="Auxiliary\Hypergraph\CoordinatesCalculator.cs" />
     <Compile Include="Auxiliary\MessageBox\MessageBox.cs" />
     <Compile Include="Auxiliary\MessageBox\MessageBoxButtons.cs" />
     <Compile Include="Auxiliary\MessageBox\MessageBoxTypes.cs" />
@@ -101,6 +102,10 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\InversedBoolToVisibilityConverter.cs" />
     <Compile Include="Models\CheckBoxMenuItemModel.cs" />
+    <Compile Include="ViewModels\Hypergraph\HypergraphViewModel.cs" />
+    <Compile Include="ViewModels\Hypergraph\HypergraphComponent.cs" />
+    <Compile Include="ViewModels\Hypergraph\SimplexViewModel.cs" />
+    <Compile Include="ViewModels\Hypergraph\VertexViewModel.cs" />
     <Compile Include="Models\MainViewSettingsModel.cs" />
     <Compile Include="ViewModels\Base\WindowViewModel.cs" />
     <Compile Include="ViewModels\Controls\NumericUpDownViewModel.cs" />
@@ -176,6 +181,10 @@
     <Resource Include="Resources\ErrorSign.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Diploma.Extensions\Diploma.Extensions.csproj">
+      <Project>{f036582b-fb3a-4334-8760-3ac5d14760a8}</Project>
+      <Name>Diploma.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Diploma.Hypergraph\Diploma.Hypergraph.csproj">
       <Project>{59c08352-bf70-4e5a-ad97-95759f8eb6cb}</Project>
       <Name>Diploma.Hypergraph</Name>

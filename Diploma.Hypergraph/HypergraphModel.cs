@@ -8,19 +8,19 @@ namespace Diploma.Hypergraph
 
     // TODO: DD
     [DebuggerDisplay("")]
-    public sealed class Hypergraph
+    public sealed class HypergraphModel
     {
 
-        private Vertex[] _vertices;
-        private Simplex[] _simplices;
+        private VertexModel[] _vertices;
+        private SimplexModel[] _simplices;
 
-        public Hypergraph(Vertex[] vertices, Simplex[] simplices)
+        public HypergraphModel(VertexModel[] vertices, SimplexModel[] simplices)
         {
             Vertices = vertices.Unnulable().ToArray();
             Simplices = simplices.Unnulable().ToArray();
         }
 
-        public Vertex[] Vertices
+        public VertexModel[] Vertices
         {
             get =>
                 _vertices;
@@ -29,7 +29,7 @@ namespace Diploma.Hypergraph
                 _vertices = value;
         }
 
-        public Simplex[] Simplices
+        public SimplexModel[] Simplices
         {
             get =>
                 _simplices;

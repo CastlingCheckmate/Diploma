@@ -78,7 +78,8 @@
                 </Image.InputBindings>
             </Image>
         </Grid>
-        <Menu Grid.Row="1"
+        <Menu x:Name="_mainMenu"
+              Grid.Row="1"
               Background="LightGray">
             <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=FileMenuItem}"
                       Visibility="{Binding Settings.FileMenuItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -114,7 +115,8 @@
                        Margin="3,0,0,0"
                        Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=SimplexVerticesCount}"
                        VerticalAlignment="Center" />
-            <controls:NumericUpDown Grid.Row="0"
+            <controls:NumericUpDown x:Name="_simplexVerticesCount"
+                                    Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="5,0,0,0"
                                     DataContext="{Binding SimplexVerticesCountDataContext}" />
@@ -123,7 +125,7 @@
                        Margin="15,0,0,0"
                        Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=VerticesGradesVector}"
                        VerticalAlignment="Center" />
-            <!-- TODO: TextBox adorner -->
+            <!-- TODO: TextBox adorner, хотя похуй, можно и без него думаю -->
             <TextBox Grid.Row="0"
                      Grid.Column="3"
                      Margin="5,0,0,0"
@@ -131,7 +133,8 @@
                      BorderBrush="Black"
                      Style="{StaticResource TextBoxWithBlackBorderStyle}"
                      Text="{Binding VectorString, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Grid.Row="0"
+            <Button x:Name="_restoreHypergraphButton"
+                    Grid.Row="0"
                     Grid.Column="4"
                     Margin="5,0,3,0"
                     Width="Auto"
@@ -142,7 +145,7 @@
                                      Grid.Column="0"
                                      Grid.ColumnSpan="5"
                                      Margin="3"
-                                     Hypergraph="{Binding Hypergraph}" />
+                                     DataContext="{Binding Hypergraph}" />
         </Grid>
         <StatusBar Grid.Row="3"
                    VerticalAlignment="Bottom">

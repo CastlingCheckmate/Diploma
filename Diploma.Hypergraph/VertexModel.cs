@@ -5,13 +5,13 @@ namespace Diploma.Hypergraph
 {
 
     [DebuggerDisplay("{ToString()}")]
-    public sealed class Vertex
+    public sealed class VertexModel
     {
 
         private int _id;
         private string _name;
 
-        public Vertex(int id, string name)
+        public VertexModel(int id, string name)
         {
             Id = id;
             Name = name;

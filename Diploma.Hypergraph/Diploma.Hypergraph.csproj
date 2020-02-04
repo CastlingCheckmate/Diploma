@@ -42,9 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ReductionAlgorithm.cs" />
-    <Compile Include="Simplex.cs" />
-    <Compile Include="Vertex.cs" />
-    <Compile Include="Hypergraph.cs" />
+    <Compile Include="SimplexModel.cs" />
+    <Compile Include="VertexModel.cs" />
+    <Compile Include="HypergraphModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

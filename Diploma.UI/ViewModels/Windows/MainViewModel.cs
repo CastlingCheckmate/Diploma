@@ -22,7 +22,7 @@ namespace Diploma.UI.ViewModels.Windows
         private readonly MainViewSettingsModel _settings;
         private readonly NumericUpDownViewModel _simplexVerticesCountDataContext;
         private WindowState _state;
-        private Hypergraph.Hypergraph _hypergraph = new Hypergraph.Hypergraph(null, null);
+        private HypergraphModel _hypergraph = new HypergraphModel(null, null);
         private ICommand _showLanguageSelectionCommand;
         private ICommand _showHelpCommand;
         private ICommand _showAboutCommand;
@@ -67,7 +67,7 @@ namespace Diploma.UI.ViewModels.Windows
             }
         }
 
-        public Hypergraph.Hypergraph Hypergraph
+        public HypergraphModel Hypergraph
         {
             get =>
                 _hypergraph;

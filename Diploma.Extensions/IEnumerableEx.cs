@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Diploma.Extensions
@@ -12,9 +13,37 @@ namespace Diploma.Extensions
             return collection ?? Enumerable.Empty<T>();
         }
 
-        public static IEnumerable<T> Unnulable<T>(this IEnumerable<T> collection, T singleValue)
+        public static bool IsEmpty<T>(this IEnumerable<T> collection)
         {
-            return collection ?? Enumerable.Repeat(singleValue, 1);
+            return collection is null || !collection.Any();
+        }
+
+        public static bool IsNotEmpty<T>(this IEnumerable<T> collection)
+        {
+            return !IsEmpty(collection);
+        }
+
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            collection.ForEach((index, item) =>
+            {
+                action(item);
+            });
+            return collection;
+        }
+
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<int, T> action)
+        {
+            if (collection is null)
+            {
+                return null;
+            }
+            var index = 0;
+            foreach (var item in collection)
+            {
+                action(index++, item);
+            }
+            return collection;
         }
 
     }

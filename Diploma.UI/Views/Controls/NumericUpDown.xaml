@@ -13,7 +13,8 @@
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel DockPanel.Dock="Right">
-            <Button DockPanel.Dock="Top"
+            <Button x:Name="_incrementButton"
+                    DockPanel.Dock="Top"
                     Style="{StaticResource NumericUpDownButtonStyle}"
                     Command="{Binding IncrementCommand}"
                     Padding="1">
@@ -25,7 +26,8 @@
                     </Polygon.RenderTransform>
                 </Polygon>
             </Button>
-            <Button DockPanel.Dock="Bottom"
+            <Button x:Name="_decrementButton"
+                    DockPanel.Dock="Bottom"
                     Style="{StaticResource NumericUpDownButtonStyle}"
                     Command="{Binding DecrementCommand}"
                     Margin="0,0,0,0"

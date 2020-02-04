@@ -5,13 +5,13 @@ namespace Diploma.Hypergraph
 {
 
     [DebuggerDisplay("{ToString()}")]
-    public sealed class Simplex
+    public sealed class SimplexModel
     {
 
         private string _name;
-        private Vertex[] _vertices;
+        private VertexModel[] _vertices;
 
-        public Simplex(string name, Vertex[] vertices)
+        public SimplexModel(string name, VertexModel[] vertices)
         {
             Name = name;
             Vertices = vertices;
@@ -26,7 +26,7 @@ namespace Diploma.Hypergraph
                 _name = value;
         }
 
-        public Vertex[] Vertices
+        public VertexModel[] Vertices
         {
             get =>
                 _vertices;
