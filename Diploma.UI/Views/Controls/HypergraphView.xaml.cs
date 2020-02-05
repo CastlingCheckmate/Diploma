@@ -15,7 +15,6 @@ namespace Diploma.UI.Views.Controls
         // TODO: unsubscribe
         private readonly Action<object, MouseEventArgs> _onMouseMove;
         private readonly Action<object, MouseButtonEventArgs> _onMouseUp;
-        private HypergraphViewModel _viewModel;
 
         public HypergraphView()
         {
@@ -27,60 +26,66 @@ namespace Diploma.UI.Views.Controls
             };
             _onMouseMove = (sender, eventArgs) =>
             {
-                if (ViewModel is null || ViewModel.FixedSimplex is null)
+                if (ViewModel is null || ViewModel.CapturedSimplex is null)
                 {
                     return;
                 }
-                if (ViewModel.FixedSimplex.Center.Fill == Brushes.Gray)
+                if (ViewModel.CapturedSimplex.Center.Fill == Brushes.Gray)
                 {
-                    ViewModel.FixedSimplex.Center.Fill = Brushes.Black;
-                    for (var i = 0; i < ViewModel.FixedSimplex.Edges.Length; i++)
+                    ViewModel.CapturedSimplex.Center.Fill = Brushes.Black;
+                    for (var i = 0; i < ViewModel.CapturedSimplex.Edges.Length; i++)
                     {
-                        ViewModel.FixedSimplex.Edges[i].Stroke = Brushes.Black;
+                        ViewModel.CapturedSimplex.Edges[i].Stroke = Brushes.Black;
                     }
                 }
-                Canvas.SetLeft(ViewModel.FixedSimplex.Center, Mouse.GetPosition(_canvas).X - SimplexViewModel.SimplexCenterRadius);
-                if (Canvas.GetLeft(ViewModel.FixedSimplex.Center) < 0)
+                Canvas.SetLeft(ViewModel.CapturedSimplex.Center, Mouse.GetPosition(_canvas).X - SimplexViewModel.SimplexCenterRadius);
+                if (Canvas.GetLeft(ViewModel.CapturedSimplex.Center) < 0)
                 {
-                    Canvas.SetLeft(ViewModel.FixedSimplex.Center, 5);
+                    Canvas.SetLeft(ViewModel.CapturedSimplex.Center, 5);
                 }
-                if (Canvas.GetLeft(ViewModel.FixedSimplex.Center) + VertexViewModel.VertexRadius * 2 > _canvas.ActualWidth)
+                if (Canvas.GetLeft(ViewModel.CapturedSimplex.Center) + VertexViewModel.VertexRadius * 2 > _canvas.ActualWidth)
                 {
-                    Canvas.SetLeft(ViewModel.FixedSimplex.Center, _canvas.ActualWidth - VertexViewModel.VertexRadius * 2);
+                    Canvas.SetLeft(ViewModel.CapturedSimplex.Center, _canvas.ActualWidth - VertexViewModel.VertexRadius * 2);
                 }
-                Canvas.SetTop(ViewModel.FixedSimplex.Center, Mouse.GetPosition(_canvas).Y - SimplexViewModel.SimplexCenterRadius);
-                if (Canvas.GetTop(ViewModel.FixedSimplex.Center) < 0)
+                Canvas.SetTop(ViewModel.CapturedSimplex.Center, Mouse.GetPosition(_canvas).Y - SimplexViewModel.SimplexCenterRadius);
+                if (Canvas.GetTop(ViewModel.CapturedSimplex.Center) < 0)
                 {
-                    Canvas.SetTop(ViewModel.FixedSimplex.Center, 5);
+                    Canvas.SetTop(ViewModel.CapturedSimplex.Center, 5);
                 }
-                if (Canvas.GetTop(ViewModel.FixedSimplex.Center) + VertexViewModel.VertexRadius * 2 > _canvas.ActualHeight)
+                if (Canvas.GetTop(ViewModel.CapturedSimplex.Center) + VertexViewModel.VertexRadius * 2 > _canvas.ActualHeight)
                 {
-                    Canvas.SetTop(ViewModel.FixedSimplex.Center, _canvas.ActualHeight - VertexViewModel.VertexRadius * 2);
+                    Canvas.SetTop(ViewModel.CapturedSimplex.Center, _canvas.ActualHeight - VertexViewModel.VertexRadius * 2);
                 }
-                for (var i = 0; i < ViewModel.FixedSimplex.Edges.Length; i++)
+                for (var i = 0; i < ViewModel.CapturedSimplex.Edges.Length; i++)
                 {
-                    ViewModel.FixedSimplex.Edges[i].X1 = Canvas.GetLeft(ViewModel.FixedSimplex.Center) + SimplexViewModel.SimplexCenterRadius;
-                    ViewModel.FixedSimplex.Edges[i].Y1 = Canvas.GetTop(ViewModel.FixedSimplex.Center) + SimplexViewModel.SimplexCenterRadius;
+                    ViewModel.CapturedSimplex.Edges[i].X1 = Canvas.GetLeft(ViewModel.CapturedSimplex.Center) + SimplexViewModel.SimplexCenterRadius;
+                    ViewModel.CapturedSimplex.Edges[i].Y1 = Canvas.GetTop(ViewModel.CapturedSimplex.Center) + SimplexViewModel.SimplexCenterRadius;
                 }
             };
             _onMouseUp = (sender, eventArgs) =>
             {
-                if (ViewModel is null || ViewModel.FixedSimplex is null)
+                if (ViewModel is null || ViewModel.CapturedSimplex is null)
                 {
                     return;
                 }
-                ViewModel.FixedSimplex.Center.Fill = Brushes.Gray;
-                for (var i = 0; i < ViewModel.FixedSimplex.Edges.Length; i++)
+                ViewModel.CapturedSimplex.Center.Fill = Brushes.Gray;
+                for (var i = 0; i < ViewModel.CapturedSimplex.Edges.Length; i++)
                 {
-                    ViewModel.FixedSimplex.Edges[i].Stroke = Brushes.Gray;
+                    ViewModel.CapturedSimplex.Edges[i].Stroke = Brushes.Gray;
                 }
-                ViewModel.FixedSimplex = null;
+                ViewModel.CapturedSimplex = null;
             };
             Loaded += (sender, eventArgs) =>
             {
                 Window.GetWindow(this).Closing += (_sender, _eventArgs) =>
                 {
                     ViewModel?.Dispose();
+                    Window.GetWindow(this).MouseMove -= new MouseEventHandler(_onMouseMove);
+                    Window.GetWindow(this).MouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    ((Menu)Window.GetWindow(this).FindName("_mainMenu")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    ((NumericUpDown)Window.GetWindow(this).FindName("_simplexVerticesCount")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    ((Button)Window.GetWindow(this).FindName("_restoreHypergraphButton")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    _canvas.MouseMove -= new MouseEventHandler(_onMouseMove);
                 };
                 Window.GetWindow(this).MouseMove += new MouseEventHandler(_onMouseMove);
                 Window.GetWindow(this).MouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
@@ -93,11 +98,9 @@ namespace Diploma.UI.Views.Controls
 
         private HypergraphViewModel ViewModel
         {
-            get =>
-                _viewModel;
+            get;
 
-            set =>
-                _viewModel = value;
+            set;
         }
 
         public void Rebuild()

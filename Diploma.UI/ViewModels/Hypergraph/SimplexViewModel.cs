@@ -33,7 +33,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             Canvas.SetZIndex(Center, 1);
             Center.MouseEnter += (sender, eventArgs) =>
             {
-                if (HypergraphViewModel.FixedSimplex != null)
+                if (HypergraphViewModel.CapturedSimplex != null)
                 {
                     return;
                 }
@@ -45,7 +45,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             Center.MouseLeave += (sender, eventArgs) =>
             {
-                if (ReferenceEquals(Center, HypergraphViewModel.FixedSimplex))
+                if (ReferenceEquals(Center, HypergraphViewModel.CapturedSimplex))
                 {
                     return;
                 }
@@ -58,7 +58,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             Center.MouseDown += (sender, eventArgs) =>
             {
                 PositionBeforeMoving = new Point(Canvas.GetLeft(Center), Canvas.GetTop(Center));
-                HypergraphViewModel.FixedSimplex = this;
+                HypergraphViewModel.CapturedSimplex = this;
                 Center.Fill = Brushes.Black;
                 for (var i = 0; i < Edges.Length; i++)
                 {
@@ -67,8 +67,8 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             Center.MouseUp += (sender, eventArgs) =>
             {
-                var fixedSimplex = HypergraphViewModel.FixedSimplex;
-                HypergraphViewModel.FixedSimplex = null;
+                var fixedSimplex = HypergraphViewModel.CapturedSimplex;
+                HypergraphViewModel.CapturedSimplex = null;
                 if (!ReferenceEquals(fixedSimplex, this) || Center.IsMouseOver)
                 {
                     Center.Fill = Brushes.Black;
@@ -80,7 +80,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             Center.MouseMove += (sender, eventArgs) =>
             {
-                if (!ReferenceEquals(this, HypergraphViewModel.FixedSimplex))
+                if (!ReferenceEquals(this, HypergraphViewModel.CapturedSimplex))
                 {
                     return;
                 }

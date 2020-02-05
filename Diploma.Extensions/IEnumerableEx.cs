@@ -23,27 +23,25 @@ namespace Diploma.Extensions
             return !IsEmpty(collection);
         }
 
-        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
             collection.ForEach((index, item) =>
             {
                 action(item);
             });
-            return collection;
         }
 
-        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<int, T> action)
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<int, T> action)
         {
             if (collection is null)
             {
-                return null;
+                return;
             }
             var index = 0;
             foreach (var item in collection)
             {
                 action(index++, item);
             }
-            return collection;
         }
 
     }
