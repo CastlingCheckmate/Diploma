@@ -6,13 +6,65 @@
              mc:Ignorable="d"
              Width="202"
              Height="202">
-    <Canvas>
-        <Path Fill="Transparent"
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Canvas Opacity="0.5">
+        <Path Fill="Gray"
               Stroke="Black">
             <Path.Data>
                 <EllipseGeometry Center="101,101"
                                  RadiusX="100"
                                  RadiusY="100" />
+            </Path.Data>
+        </Path>
+        <Button Canvas.Left="70"
+                Canvas.Top="172"
+                Width="10"
+                Height="20"
+                Style="{StaticResource ButtonFlatStyle}">
+            <Button.LayoutTransform>
+                <RotateTransform CenterX="0.5"
+                                 CenterY="0.5"
+                                 Angle="15" />
+            </Button.LayoutTransform>
+        </Button>
+        <Button Canvas.Left="120"
+                Canvas.Top="172"
+                Width="10"
+                Height="20"
+                Style="{StaticResource ButtonFlatStyle}">
+            <Button.LayoutTransform>
+                <RotateTransform CenterX="0.5"
+                                 CenterY="0.5"
+                                 Angle="-17" />
+            </Button.LayoutTransform>
+        </Button>
+        <Path Fill="Transparent"
+              Stroke="Black"
+              StrokeThickness="2">
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="65,180"
+                                    IsClosed="False">
+                            <ArcSegment Point="137,180" Size="88 88" SweepDirection="Clockwise" IsLargeArc="True" />
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                    </PathGeometry>
+            </Path.Data>
+        </Path>
+        <Path Fill="Gray"
+              Stroke="Black"
+              Opacity="0.8">
+            <Path.Data>
+                <EllipseGeometry Center="61,177"
+                                 RadiusX="10"
+                                 RadiusY="10" />
             </Path.Data>
         </Path>
     </Canvas>
