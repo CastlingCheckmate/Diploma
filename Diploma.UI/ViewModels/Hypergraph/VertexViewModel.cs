@@ -27,24 +27,14 @@ namespace Diploma.UI.ViewModels.Hypergraph
             {
                 if (HypergraphViewModel.CapturedSimplex != null)
                 {
-                    var simplexCenterPosition = new Point(Canvas.GetLeft(HypergraphViewModel.CapturedSimplex.Center) + SimplexViewModel.SimplexCenterRadius
-                                                          , Canvas.GetTop(HypergraphViewModel.CapturedSimplex.Center) + SimplexViewModel.SimplexCenterRadius);
-                    foreach (var vertexViewModel in HypergraphViewModel.Vertices)
+                    Canvas.SetLeft(HypergraphViewModel.CapturedSimplex.Center, HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.X);
+                    Canvas.SetTop(HypergraphViewModel.CapturedSimplex.Center, HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.Y);
+                    for (var i = 0; i < HypergraphViewModel.CapturedSimplex.Edges.Length; i++)
                     {
-                        var vertexPosition = new Point(Canvas.GetLeft(vertexViewModel.VertexView) + VertexRadius, Canvas.GetTop(vertexViewModel.VertexView) + VertexRadius);
-                        if ((simplexCenterPosition - vertexPosition).Length <= VertexRadius + SimplexViewModel.SimplexCenterRadius)
-                        {
-                            Canvas.SetLeft(HypergraphViewModel.CapturedSimplex.Center, HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.X);
-                            Canvas.SetTop(HypergraphViewModel.CapturedSimplex.Center, HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.Y);
-                            for (var i = 0; i < HypergraphViewModel.CapturedSimplex.Edges.Length; i++)
-                            {
-                                HypergraphViewModel.CapturedSimplex.Edges[i].X1 = HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.X + SimplexViewModel.SimplexCenterRadius;
-                                HypergraphViewModel.CapturedSimplex.Edges[i].Y1 = HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.Y + SimplexViewModel.SimplexCenterRadius;
-                            }
-                            HypergraphViewModel.CapturedSimplex.PositionBeforeMoving = null;
-                            break;
-                        }
+                        HypergraphViewModel.CapturedSimplex.Edges[i].X1 = HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.X + SimplexViewModel.SimplexCenterRadius;
+                        HypergraphViewModel.CapturedSimplex.Edges[i].Y1 = HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.Y + SimplexViewModel.SimplexCenterRadius;
                     }
+                    HypergraphViewModel.CapturedSimplex.PositionBeforeMoving = null;
                 }
                 HypergraphViewModel.CapturedSimplex = null;
                 if (!ReferenceEquals(sender, VertexView))

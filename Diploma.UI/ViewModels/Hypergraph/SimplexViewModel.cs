@@ -67,9 +67,29 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             Center.MouseUp += (sender, eventArgs) =>
             {
-                var fixedSimplex = HypergraphViewModel.CapturedSimplex;
-                HypergraphViewModel.CapturedSimplex = null;
-                if (!ReferenceEquals(fixedSimplex, this) || Center.IsMouseOver)
+                if (HypergraphViewModel.CapturedSimplex != null)
+                {
+                    var simplexCenterPosition = new Point(Canvas.GetLeft(HypergraphViewModel.CapturedSimplex.Center) + SimplexCenterRadius
+                                                          , Canvas.GetTop(HypergraphViewModel.CapturedSimplex.Center) + SimplexCenterRadius);
+                    foreach (var vertexViewModel in HypergraphViewModel.Vertices)
+                    {
+                        var vertexPosition = new Point(Canvas.GetLeft(vertexViewModel.VertexView) + VertexViewModel.VertexRadius
+                                                       , Canvas.GetTop(vertexViewModel.VertexView) + VertexViewModel.VertexRadius);
+                        if ((simplexCenterPosition - vertexPosition).Length <= VertexViewModel.VertexRadius + SimplexCenterRadius)
+                        {
+                            Canvas.SetLeft(HypergraphViewModel.CapturedSimplex.Center, HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.X);
+                            Canvas.SetTop(HypergraphViewModel.CapturedSimplex.Center, HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.Y);
+                            for (var i = 0; i < HypergraphViewModel.CapturedSimplex.Edges.Length; i++)
+                            {
+                                HypergraphViewModel.CapturedSimplex.Edges[i].X1 = HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.X + SimplexCenterRadius;
+                                HypergraphViewModel.CapturedSimplex.Edges[i].Y1 = HypergraphViewModel.CapturedSimplex.PositionBeforeMoving.Value.Y + SimplexCenterRadius;
+                            }
+                            HypergraphViewModel.CapturedSimplex.PositionBeforeMoving = null;
+                            break;
+                        }
+                    }
+                }
+                if (!ReferenceEquals(HypergraphViewModel.CapturedSimplex, this) || Center.IsMouseOver)
                 {
                     Center.Fill = Brushes.Black;
                     for (var i = 0; i < Edges.Length; i++)
@@ -77,6 +97,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
                         Edges[i].Stroke = Brushes.Black;
                     }
                 }
+                HypergraphViewModel.CapturedSimplex = null;
             };
             Center.MouseMove += (sender, eventArgs) =>
             {
