@@ -53,6 +53,10 @@ namespace Diploma.Localization
 		public string Restore =>
 			_restore;
 		
+		private readonly string _clear = "Clear";
+		public string Clear =>
+			_clear;
+		
 		private readonly string _verticesGradesVectorCantBeRestored = "Vertices grades vector can't be restored into {0}-complex!";
 		public string VerticesGradesVectorCantBeRestored(object value0)
 		{

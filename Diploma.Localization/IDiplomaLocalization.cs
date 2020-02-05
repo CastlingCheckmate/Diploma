@@ -28,6 +28,9 @@ namespace Diploma.Localization
 		string Restore
 { get; }
 		
+		string Clear
+{ get; }
+		
 		string VerticesGradesVectorCantBeRestored
 (object value0);
 		

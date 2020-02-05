@@ -100,7 +100,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\InversedBoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ConvertersHost.cs" />
+    <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Models\CheckBoxMenuItemModel.cs" />
     <Compile Include="ViewModels\Hypergraph\HypergraphViewModel.cs" />
     <Compile Include="ViewModels\Hypergraph\HypergraphComponent.cs" />

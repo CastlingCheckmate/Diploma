@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Diploma.UI.Converters
 {
 
-    class InversedBoolToVisibilityConverter : IValueConverter
+    public class NullToBoolConverter : IValueConverter
     {
+        private readonly bool _nullValue;
+
+        public NullToBoolConverter(bool nullValue)
+        {
+            _nullValue = nullValue;
+        }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((bool)value)
+            if (value is null)
             {
-                return Visibility.Collapsed;
+                return _nullValue;
             }
-            return Visibility.Visible;
+            return !_nullValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

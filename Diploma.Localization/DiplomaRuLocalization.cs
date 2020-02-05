@@ -53,6 +53,10 @@ namespace Diploma.Localization
 		public string Restore =>
 			_restore;
 		
+		private readonly string _clear = "Очистить";
+		public string Clear =>
+			_clear;
+		
 		private readonly string _verticesGradesVectorCantBeRestored = "Вектор степеней вершин не может быть реализован в {0}-комплекс!";
 		public string VerticesGradesVectorCantBeRestored(object value0)
 		{

@@ -9,9 +9,16 @@ namespace Diploma.UI.Converters
     public sealed class BoolToVisibilityConverter : IValueConverter
     {
 
+        private readonly bool _visibleValue;
+
+        public BoolToVisibilityConverter(bool visibleValue)
+        {
+            _visibleValue = visibleValue;
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((bool)value)
+            if (value is bool && (bool)value == _visibleValue)
             {
                 return Visibility.Visible;
             }

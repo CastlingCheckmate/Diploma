@@ -22,13 +22,14 @@ namespace Diploma.UI.ViewModels.Windows
         private readonly MainViewSettingsModel _settings;
         private readonly NumericUpDownViewModel _simplexVerticesCountDataContext;
         private WindowState _state;
-        private HypergraphModel _hypergraph = new HypergraphModel(null, null);
+        private HypergraphModel _hypergraph;
         private ICommand _showLanguageSelectionCommand;
         private ICommand _showHelpCommand;
         private ICommand _showAboutCommand;
         private ICommand _minimizeCommand;
         private ICommand _quitCommand;
         private ICommand _restoreCommand;
+        private ICommand _clearCommand;
 
         public MainViewModel()
         {
@@ -99,6 +100,10 @@ namespace Diploma.UI.ViewModels.Windows
             _restoreCommand ?? (_restoreCommand = new RelayCommand(_ => Restore(),
                 _ => IsValidVectorString));
 
+        public ICommand ClearCommand =>
+            _clearCommand ?? (_clearCommand = new RelayCommand(_ => Clear(),
+                _ => Hypergraph != null));
+
         public bool IsValidVectorString
         {
             get
@@ -159,6 +164,7 @@ namespace Diploma.UI.ViewModels.Windows
 
         private void Restore()
         {
+            VectorString = string.Join(" ", VectorString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
             var verticesGradesVector = VectorString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(vertexGradeString => int.Parse(vertexGradeString))
                 .ToArray();
@@ -170,6 +176,12 @@ namespace Diploma.UI.ViewModels.Windows
                 return;
             }
             Hypergraph = restoredHypergraph;
+        }
+
+        private void Clear()
+        {
+            VectorString = string.Empty;
+            Hypergraph = null;
         }
 
     }

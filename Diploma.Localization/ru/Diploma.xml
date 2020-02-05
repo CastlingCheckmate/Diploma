@@ -9,6 +9,7 @@
   <record name="SimplexVerticesCount">Количество вершин симплекса:</record>
   <record name="VerticesGradesVector">Вектор степеней вершин:</record>
   <record name="Restore">Восстановить</record>
+  <record name="Clear">Очистить</record>
   <record name="VerticesGradesVectorCantBeRestored">Вектор степеней вершин не может быть реализован в {0}-комплекс!</record>
   <!-- Menu -->
   <record name="Menu">Меню</record>

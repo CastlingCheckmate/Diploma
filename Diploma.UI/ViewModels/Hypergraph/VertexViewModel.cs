@@ -17,42 +17,13 @@ namespace Diploma.UI.ViewModels.Hypergraph
 
         public static readonly double VertexRadius = 15d;
 
-        private VertexModel _model;
-        private Ellipse _vertexView;
-        private VertexSimplicesView _vertexSimplicesView;
-        private Timer _vertexTimer = new Timer(500);
-        private Timer _simplicesTimer = new Timer(1000);
+        private readonly Action<object, MouseButtonEventArgs> _onMouseUp;
 
         public VertexViewModel(HypergraphViewModel hypergraphViewModel, VertexModel model, Action<object, MouseEventArgs> onMouseMove, Point centerPoint)
         {
             HypergraphViewModel = hypergraphViewModel;
             Model = model;
-            _vertexView = new Ellipse()
-            {
-                Width = VertexRadius * 2
-                , Height = VertexRadius * 2
-                , Fill = Brushes.Gray
-            };
-            Canvas.SetLeft(VertexView, centerPoint.X - VertexRadius);
-            Canvas.SetTop(VertexView, centerPoint.Y - VertexRadius);
-            Canvas.SetZIndex(VertexView, 2);
-            _vertexView.MouseEnter += (sender, eventArgs) =>
-            {
-                if (HypergraphViewModel.FixedSimplex != null)
-                {
-                    return;
-                }
-                _vertexView.Fill = Brushes.Black;
-                _vertexTimer.Start();
-            };
-            
-            _vertexView.MouseLeave += (sender, eventArgs) =>
-            {
-                _vertexTimer.Stop();
-                _vertexView.Fill = Brushes.Gray;
-            };
-
-            _vertexView.MouseUp += (sender, eventArgs) =>
+            _onMouseUp = (sender, eventArgs) =>
             {
                 if (HypergraphViewModel.FixedSimplex != null)
                 {
@@ -76,62 +47,102 @@ namespace Diploma.UI.ViewModels.Hypergraph
                     }
                 }
                 HypergraphViewModel.FixedSimplex = null;
-            };
-
-            _vertexView.MouseMove += new MouseEventHandler(onMouseMove);
-
-            _vertexTimer.Elapsed += async (sender, eventArgs) =>
-            {
-                await _vertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
+                if (!ReferenceEquals(sender, VertexView))
                 {
-                    _vertexSimplicesView.Visibility = Visibility.Visible;
+                    return;
+                }
+                VertexView.Fill = Brushes.Black;
+                AfterVertexEnter.Start();
+            };
+            VertexView = new Ellipse()
+            {
+                Width = VertexRadius * 2
+                , Height = VertexRadius * 2
+                , Fill = Brushes.Gray
+            };
+            Canvas.SetLeft(VertexView, centerPoint.X - VertexRadius);
+            Canvas.SetTop(VertexView, centerPoint.Y - VertexRadius);
+            Canvas.SetZIndex(VertexView, 2);
+            VertexView.MouseEnter += (sender, eventArgs) =>
+            {
+                if (HypergraphViewModel.FixedSimplex != null)
+                {
+                    return;
+                }
+                VertexView.Fill = Brushes.Black;
+                AfterVertexEnter.Start();
+            };
+            VertexView.MouseLeave += (sender, eventArgs) =>
+            {
+                AfterVertexEnter.Stop();
+                VertexView.Fill = Brushes.Gray;
+            };
+            VertexView.MouseUp += new MouseButtonEventHandler(_onMouseUp);
+            VertexView.MouseMove += new MouseEventHandler(onMouseMove);
+            AfterVertexEnter.Elapsed += async (sender, eventArgs) =>
+            {
+                await VertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    VertexSimplicesView.Visibility = Visibility.Visible;
                 }));
             };
-
-            _vertexSimplicesView = new VertexSimplicesView()
+            VertexSimplicesView = new VertexSimplicesView()
             {
                 Visibility = Visibility.Collapsed
             };
-            Canvas.SetLeft(_vertexSimplicesView, centerPoint.X - _vertexSimplicesView.Width / 2);
-            Canvas.SetTop(_vertexSimplicesView, centerPoint.Y - _vertexSimplicesView.Height / 2);
-            Canvas.SetZIndex(_vertexSimplicesView, 3);
-            _vertexSimplicesView.MouseEnter += (sender, eventArgs) =>
+            Canvas.SetLeft(VertexSimplicesView, centerPoint.X - VertexSimplicesView.Width / 2);
+            Canvas.SetTop(VertexSimplicesView, centerPoint.Y - VertexSimplicesView.Height / 2);
+            Canvas.SetZIndex(VertexSimplicesView, 3);
+            VertexSimplicesView.MouseEnter += (sender, eventArgs) =>
             {
-                _simplicesTimer.Stop();
+                AfterVertexLeave.Stop();
             };
-            _vertexSimplicesView.MouseLeave += (sender, eventArgs) =>
+            VertexSimplicesView.MouseLeave += (sender, eventArgs) =>
             {
-                _simplicesTimer.Start();
+                AfterVertexLeave.Start();
             };
-            _vertexSimplicesView.MouseMove += new MouseEventHandler(onMouseMove);
-            _simplicesTimer.Elapsed += async (sender, eventArgs) =>
+            VertexSimplicesView.MouseMove += new MouseEventHandler(onMouseMove);
+            VertexSimplicesView.MouseUp += new MouseButtonEventHandler(_onMouseUp);
+            AfterVertexLeave.Elapsed += async (sender, eventArgs) =>
             {
-                await _vertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
+                await VertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    _vertexSimplicesView.Visibility = Visibility.Collapsed;
+                    VertexSimplicesView.Visibility = Visibility.Collapsed;
                 }));
             };
         }
 
         public VertexModel Model
         {
-            get =>
-                _model;
+            get;
 
-            private set =>
-                _model = value;
+            private set;
         }
 
-        public Ellipse VertexView =>
-            _vertexView;
+        public Ellipse VertexView
+        {
+            get;
+        }
 
-        public VertexSimplicesView VertexSimplicesView =>
-            _vertexSimplicesView;
+        public VertexSimplicesView VertexSimplicesView
+        {
+            get;
+        }
+
+        private Timer AfterVertexEnter
+        {
+            get;
+        } = new Timer(500);
+
+        private Timer AfterVertexLeave
+        {
+            get;
+        } = new Timer(1000);
 
         public void Dispose()
         {
-            _vertexTimer.Dispose();
-            _simplicesTimer.Dispose();
+            AfterVertexEnter.Dispose();
+            AfterVertexLeave.Dispose();
         }
 
     }

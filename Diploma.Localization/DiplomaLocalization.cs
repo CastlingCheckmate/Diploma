@@ -87,6 +87,9 @@ namespace Diploma.Localization
 		public string Restore =>
 			_currentLocalization.Restore;
 		
+		public string Clear =>
+			_currentLocalization.Clear;
+		
 		public string VerticesGradesVectorCantBeRestored(object value0)
 		{
 			return _currentLocalization.VerticesGradesVectorCantBeRestored(

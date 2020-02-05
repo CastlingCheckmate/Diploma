@@ -17,8 +17,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:InversedBoolToVisibilityConverter x:Key="InversedBoolToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Window.InputBindings>
@@ -82,18 +80,18 @@
               Grid.Row="1"
               Background="LightGray">
             <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=FileMenuItem}"
-                      Visibility="{Binding Settings.FileMenuItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                      Visibility="{Binding Settings.FileMenuItemViewModel.IsVisible, Converter={x:Static converters:ConvertersHost.TrueToVisible}}">
                 <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=LanguageSelectionMenuItem}"
-                          Visibility="{Binding Settings.LanguageSelectionItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Visibility="{Binding Settings.LanguageSelectionItemViewModel.IsVisible, Converter={x:Static converters:ConvertersHost.TrueToVisible}}"
                           Command="{Binding ShowLanguageSelectionCommand}" />
                 <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=HelpMenuItem}"
-                          Visibility="{Binding Settings.HelpItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Visibility="{Binding Settings.HelpItemViewModel.IsVisible, Converter={x:Static converters:ConvertersHost.TrueToVisible}}"
                           Command="{Binding ShowHelpCommand}" />
                 <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=AboutMenuItem}"
-                          Visibility="{Binding Settings.AboutItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Visibility="{Binding Settings.AboutItemViewModel.IsVisible, Converter={x:Static converters:ConvertersHost.TrueToVisible}}"
                           Command="{Binding ShowAboutCommand}" />
                 <MenuItem Header="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=QuitMenuItem}"
-                          Visibility="{Binding Settings.QuitItemViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Visibility="{Binding Settings.QuitItemViewModel.IsVisible, Converter={x:Static converters:ConvertersHost.TrueToVisible}}"
                           Command="{Binding QuitCommand}" />
             </MenuItem>
         </Menu>
@@ -108,6 +106,7 @@
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0"
@@ -132,7 +131,7 @@
                      VerticalContentAlignment="Center"
                      BorderBrush="Black"
                      Style="{StaticResource TextBoxWithBlackBorderStyle}"
-                     Text="{Binding VectorString, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding VectorString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Button x:Name="_restoreHypergraphButton"
                     Grid.Row="0"
                     Grid.Column="4"
@@ -141,9 +140,18 @@
                     Style="{StaticResource ButtonFlatStyle}"
                     Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Restore}"
                     Command="{Binding RestoreCommand}" />
+            <Button x:Name="_clearButton"
+                    Grid.Row="0"
+                    Grid.Column="5"
+                    Margin="5,0,3,0"
+                    Width="Auto"
+                    IsEnabled="{Binding Hypergraph, Converter={x:Static converters:ConvertersHost.NullToFalse}}"
+                    Style="{StaticResource ButtonFlatStyle}"
+                    Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Clear}"
+                    Command="{Binding ClearCommand}" />
             <controls:HypergraphView Grid.Row="1"
                                      Grid.Column="0"
-                                     Grid.ColumnSpan="5"
+                                     Grid.ColumnSpan="6"
                                      Margin="3"
                                      DataContext="{Binding Hypergraph}" />
         </Grid>
