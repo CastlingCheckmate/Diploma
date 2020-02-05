@@ -39,22 +39,22 @@ namespace Diploma.UI.Views.Controls
                     }
                 }
                 Canvas.SetLeft(ViewModel.CapturedSimplex.Center, Mouse.GetPosition(_canvas).X - SimplexViewModel.SimplexCenterRadius);
-                if (Canvas.GetLeft(ViewModel.CapturedSimplex.Center) < 0)
+                if (Canvas.GetLeft(ViewModel.CapturedSimplex.Center) < 5)
                 {
                     Canvas.SetLeft(ViewModel.CapturedSimplex.Center, 5);
                 }
-                if (Canvas.GetLeft(ViewModel.CapturedSimplex.Center) + VertexViewModel.VertexRadius * 2 > _canvas.ActualWidth)
+                if (Canvas.GetLeft(ViewModel.CapturedSimplex.Center) + SimplexViewModel.SimplexCenterRadius * 2 > _canvas.ActualWidth - 5)
                 {
-                    Canvas.SetLeft(ViewModel.CapturedSimplex.Center, _canvas.ActualWidth - VertexViewModel.VertexRadius * 2);
+                    Canvas.SetLeft(ViewModel.CapturedSimplex.Center, _canvas.ActualWidth - SimplexViewModel.SimplexCenterRadius * 2 - 5);
                 }
                 Canvas.SetTop(ViewModel.CapturedSimplex.Center, Mouse.GetPosition(_canvas).Y - SimplexViewModel.SimplexCenterRadius);
-                if (Canvas.GetTop(ViewModel.CapturedSimplex.Center) < 0)
+                if (Canvas.GetTop(ViewModel.CapturedSimplex.Center) < 5)
                 {
                     Canvas.SetTop(ViewModel.CapturedSimplex.Center, 5);
                 }
-                if (Canvas.GetTop(ViewModel.CapturedSimplex.Center) + VertexViewModel.VertexRadius * 2 > _canvas.ActualHeight)
+                if (Canvas.GetTop(ViewModel.CapturedSimplex.Center) + SimplexViewModel.SimplexCenterRadius * 2 > _canvas.ActualHeight - 5)
                 {
-                    Canvas.SetTop(ViewModel.CapturedSimplex.Center, _canvas.ActualHeight - VertexViewModel.VertexRadius * 2);
+                    Canvas.SetTop(ViewModel.CapturedSimplex.Center, _canvas.ActualHeight - SimplexViewModel.SimplexCenterRadius * 2 - 5);
                 }
                 for (var i = 0; i < ViewModel.CapturedSimplex.Edges.Length; i++)
                 {
@@ -85,6 +85,7 @@ namespace Diploma.UI.Views.Controls
                     ((Menu)Window.GetWindow(this).FindName("_mainMenu")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
                     ((NumericUpDown)Window.GetWindow(this).FindName("_simplexVerticesCount")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
                     ((Button)Window.GetWindow(this).FindName("_restoreHypergraphButton")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    ((Button)Window.GetWindow(this).FindName("_clearButton")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
                     _canvas.MouseMove -= new MouseEventHandler(_onMouseMove);
                 };
                 Window.GetWindow(this).MouseMove += new MouseEventHandler(_onMouseMove);
@@ -92,6 +93,7 @@ namespace Diploma.UI.Views.Controls
                 ((Menu)Window.GetWindow(this).FindName("_mainMenu")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
                 ((NumericUpDown)Window.GetWindow(this).FindName("_simplexVerticesCount")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
                 ((Button)Window.GetWindow(this).FindName("_restoreHypergraphButton")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                ((Button)Window.GetWindow(this).FindName("_clearButton")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
                 _canvas.MouseMove += new MouseEventHandler(_onMouseMove);
             };
         }
@@ -125,7 +127,7 @@ namespace Diploma.UI.Views.Controls
             foreach (var vertexViewModel in ViewModel.Vertices)
             {
                 _canvas.Children.Add(vertexViewModel.VertexView);
-                _canvas.Children.Add(vertexViewModel.VertexSimplicesView);
+                _canvas.Children.Add(vertexViewModel.VertexSimplicesViewModel.VertexSimplicesView);
             }
             foreach (var simplex in ViewModel.Simplices)
             {

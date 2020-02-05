@@ -79,35 +79,14 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             VertexView.MouseUp += new MouseButtonEventHandler(_onMouseUp);
             VertexView.MouseMove += new MouseEventHandler(onMouseMove);
+
+            VertexSimplicesViewModel = new VertexSimplicesViewModel(centerPoint, onMouseMove, _onMouseUp);
             AfterVertexEnter.Elapsed += async (sender, eventArgs) =>
             {
-                await VertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
+                HypergraphViewModel.CapturedVertexSimplices = VertexSimplicesViewModel;
+                await VertexSimplicesViewModel.VertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    VertexSimplicesView.Visibility = Visibility.Visible;
-                }));
-            };
-            VertexSimplicesView = new VertexSimplicesView()
-            {
-                Visibility = Visibility.Collapsed
-            };
-            Canvas.SetLeft(VertexSimplicesView, centerPoint.X - VertexSimplicesView.Width / 2);
-            Canvas.SetTop(VertexSimplicesView, centerPoint.Y - VertexSimplicesView.Height / 2);
-            Canvas.SetZIndex(VertexSimplicesView, 3);
-            VertexSimplicesView.MouseEnter += (sender, eventArgs) =>
-            {
-                AfterVertexLeave.Stop();
-            };
-            VertexSimplicesView.MouseLeave += (sender, eventArgs) =>
-            {
-                AfterVertexLeave.Start();
-            };
-            VertexSimplicesView.MouseMove += new MouseEventHandler(onMouseMove);
-            VertexSimplicesView.MouseUp += new MouseButtonEventHandler(_onMouseUp);
-            AfterVertexLeave.Elapsed += async (sender, eventArgs) =>
-            {
-                await VertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    VertexSimplicesView.Visibility = Visibility.Collapsed;
+                    VertexSimplicesViewModel.VertexSimplicesView.Visibility = Visibility.Visible;
                 }));
             };
         }
@@ -124,7 +103,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             get;
         }
 
-        public VertexSimplicesView VertexSimplicesView
+        public VertexSimplicesViewModel VertexSimplicesViewModel
         {
             get;
         }
@@ -134,15 +113,10 @@ namespace Diploma.UI.ViewModels.Hypergraph
             get;
         } = new Timer(500);
 
-        private Timer AfterVertexLeave
-        {
-            get;
-        } = new Timer(1000);
-
         public void Dispose()
         {
             AfterVertexEnter.Dispose();
-            AfterVertexLeave.Dispose();
+            VertexSimplicesViewModel.Dispose();
         }
 
     }

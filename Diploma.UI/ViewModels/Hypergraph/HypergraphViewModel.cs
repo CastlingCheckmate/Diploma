@@ -16,6 +16,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
     {
 
         private SimplexViewModel _capturedSimplex;
+        private VertexSimplicesViewModel _capturedVertexSimplices;
 
         public HypergraphViewModel(HypergraphModel model, HypergraphView hypergraphView, Action<object, MouseEventArgs> onMouseMove)
         {
@@ -26,6 +27,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             Simplices = Model.Simplices.Select(simplexModel => new SimplexViewModel(this, simplexModel, onMouseMove
                 , CoordinatesCalculator.GetSimplexCenterPoint(new Size(hypergraphView.ActualWidth, hypergraphView.ActualHeight), Model.Vertices.Length, simplexModel))).ToArray();
             CapturedSimplex = null;
+            CapturedVertexSimplices = null;
         }
 
         public HypergraphModel Model
@@ -74,6 +76,24 @@ namespace Diploma.UI.ViewModels.Hypergraph
                     }
                 }
                 _capturedSimplex = value;
+            }
+        }
+
+        public VertexSimplicesViewModel CapturedVertexSimplices
+        {
+            get =>
+                _capturedVertexSimplices;
+
+            set
+            {
+                if (CapturedVertexSimplices != null)
+                {
+                    CapturedVertexSimplices.VertexSimplicesView.Dispatcher.Invoke(() =>
+                    {
+                        CapturedVertexSimplices.VertexSimplicesView.Visibility = Visibility.Collapsed;
+                    });
+                }
+                _capturedVertexSimplices = value;
             }
         }
 

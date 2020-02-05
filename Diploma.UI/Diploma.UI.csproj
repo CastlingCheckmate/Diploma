@@ -106,6 +106,7 @@
     <Compile Include="ViewModels\Hypergraph\HypergraphViewModel.cs" />
     <Compile Include="ViewModels\Hypergraph\HypergraphComponent.cs" />
     <Compile Include="ViewModels\Hypergraph\SimplexViewModel.cs" />
+    <Compile Include="ViewModels\Hypergraph\VertexSimplicesViewModel.cs" />
     <Compile Include="ViewModels\Hypergraph\VertexViewModel.cs" />
     <Compile Include="Models\MainViewSettingsModel.cs" />
     <Compile Include="ViewModels\Base\WindowViewModel.cs" />

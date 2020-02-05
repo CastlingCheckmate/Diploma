@@ -85,22 +85,22 @@ namespace Diploma.UI.ViewModels.Hypergraph
                     return;
                 }
                 Canvas.SetLeft(Center, Mouse.GetPosition(HypergraphViewModel.HypergraphView._canvas).X - SimplexCenterRadius);
-                if (Canvas.GetLeft(Center) < 0)
+                if (Canvas.GetLeft(Center) < 5)
                 {
                     Canvas.SetLeft(Center, 5);
                 }
-                if (Canvas.GetLeft(Center) + VertexViewModel.VertexRadius * 2 > HypergraphViewModel.HypergraphView._canvas.ActualWidth)
+                if (Canvas.GetLeft(Center) + SimplexCenterRadius * 2 > HypergraphViewModel.HypergraphView._canvas.ActualWidth - 5)
                 {
-                    Canvas.SetLeft(Center, HypergraphViewModel.HypergraphView._canvas.ActualWidth - VertexViewModel.VertexRadius * 2);
+                    Canvas.SetLeft(Center, HypergraphViewModel.HypergraphView._canvas.ActualWidth - SimplexCenterRadius * 2);
                 }
-                Canvas.SetTop(Center, Mouse.GetPosition(HypergraphViewModel.HypergraphView._canvas).Y - SimplexCenterRadius);
-                if (Canvas.GetTop(Center) < 0)
+                Canvas.SetTop(Center, Mouse.GetPosition(HypergraphViewModel.HypergraphView._canvas).Y - SimplexCenterRadius - 5);
+                if (Canvas.GetTop(Center) < 5)
                 {
                     Canvas.SetTop(Center, 5);
                 }
-                if (Canvas.GetTop(Center) + VertexViewModel.VertexRadius * 2 > HypergraphViewModel.HypergraphView._canvas.ActualHeight)
+                if (Canvas.GetTop(Center) + SimplexCenterRadius * 2 > HypergraphViewModel.HypergraphView._canvas.ActualHeight - 5)
                 {
-                    Canvas.SetTop(Center, HypergraphViewModel.HypergraphView._canvas.ActualHeight - VertexViewModel.VertexRadius * 2);
+                    Canvas.SetTop(Center, HypergraphViewModel.HypergraphView._canvas.ActualHeight - SimplexCenterRadius * 2 - 5);
                 }
                 for (var i = 0; i < Edges.Length; i++)
                 {
