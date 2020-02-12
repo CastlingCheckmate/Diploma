@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Style="{StaticResource DiplomaWindowStyle}"
         Title="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=MainViewHeader}"
+        MaxHeight="{x:Static SystemParameters.MaximizedPrimaryScreenHeight}"
         WindowStartupLocation="{StaticResource DiplomaWindowStartupLocation}"
         WindowState="{Binding State}"
         WindowStyle="None">

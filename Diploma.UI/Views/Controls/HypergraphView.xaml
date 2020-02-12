@@ -6,7 +6,6 @@
              mc:Ignorable="d">
     <Border BorderBrush="Black" CornerRadius="1" BorderThickness="0.1">
         <Canvas x:Name="_canvas"
-                Background="White"
-                Margin="0" />
+                Background="White" />
     </Border>
 </UserControl>
