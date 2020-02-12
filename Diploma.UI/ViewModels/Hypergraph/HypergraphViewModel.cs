@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 using Diploma.Extensions;
 using Diploma.Hypergraph;
@@ -69,11 +68,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             {
                 if (CapturedSimplex != null)
                 {
-                    CapturedSimplex.Center.Fill = Brushes.Gray;
-                    for (var i = 0; i < CapturedSimplex.Edges.Length; i++)
-                    {
-                        CapturedSimplex.Edges[i].Stroke = Brushes.Gray;
-                    }
+                    CapturedSimplex.State = SimplexStates.None;
                 }
                 _capturedSimplex = value;
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,15 @@ namespace Diploma.UI.ViewModels.Hypergraph
         public static readonly double VertexRadius = 15d;
 
         private readonly Action<object, MouseButtonEventArgs> _onMouseUp;
+        private VertexStates _state;
+
+        static VertexViewModel()
+        {
+            VertexColors = new Dictionary<VertexStates, Brush>();
+            VertexColors.Add(VertexStates.None, Brushes.Gray);
+            VertexColors.Add(VertexStates.MouseOn, Brushes.Black);
+            VertexColors.Add(VertexStates.SimplicesViewActive, Brushes.Transparent);
+        }
 
         public VertexViewModel(HypergraphViewModel hypergraphViewModel, VertexModel model, Action<object, MouseEventArgs> onMouseMove, Point centerPoint)
         {
@@ -41,14 +51,13 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 {
                     return;
                 }
-                VertexView.Fill = Brushes.Black;
+                State = VertexStates.MouseOn;
                 AfterVertexEnter.Start();
             };
             VertexView = new Ellipse()
             {
                 Width = VertexRadius * 2
                 , Height = VertexRadius * 2
-                , Fill = Brushes.Gray
             };
             Canvas.SetLeft(VertexView, centerPoint.X - VertexRadius);
             Canvas.SetTop(VertexView, centerPoint.Y - VertexRadius);
@@ -59,26 +68,29 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 {
                     return;
                 }
-                VertexView.Fill = Brushes.Black;
+                State = VertexStates.MouseOn;
                 AfterVertexEnter.Start();
             };
             VertexView.MouseLeave += (sender, eventArgs) =>
             {
                 AfterVertexEnter.Stop();
-                VertexView.Fill = Brushes.Gray;
+                State = VertexStates.None;
             };
             VertexView.MouseUp += new MouseButtonEventHandler(_onMouseUp);
             VertexView.MouseMove += new MouseEventHandler(onMouseMove);
 
-            VertexSimplicesViewModel = new VertexSimplicesViewModel(centerPoint, onMouseMove, _onMouseUp);
+            VertexSimplicesViewModel = new VertexSimplicesViewModel(HypergraphViewModel, this, centerPoint, onMouseMove, _onMouseUp);
             AfterVertexEnter.Elapsed += async (sender, eventArgs) =>
             {
                 HypergraphViewModel.CapturedVertexSimplices = VertexSimplicesViewModel;
+                State = VertexStates.SimplicesViewActive;
                 await VertexSimplicesViewModel.VertexSimplicesView.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     VertexSimplicesViewModel.VertexSimplicesView.Visibility = Visibility.Visible;
                 }));
             };
+
+            State = VertexStates.None;
         }
 
         public VertexModel Model
@@ -109,6 +121,30 @@ namespace Diploma.UI.ViewModels.Hypergraph
             VertexSimplicesViewModel.Dispose();
         }
 
+        public VertexStates State
+        {
+            get =>
+                _state;
+
+            set
+            {
+                _state = value;
+                VertexView.Dispatcher.Invoke(new Action(() =>
+                {
+                    VertexView.Fill = VertexColors[State];
+                }));
+            }
+        }
+
+        private static Dictionary<VertexStates, Brush> VertexColors;
+
+    }
+
+    public enum VertexStates
+    {
+        None
+        , MouseOn
+        , SimplicesViewActive
     }
 
 }

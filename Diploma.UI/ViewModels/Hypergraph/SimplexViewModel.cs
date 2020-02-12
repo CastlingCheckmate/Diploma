@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,7 +17,17 @@ namespace Diploma.UI.ViewModels.Hypergraph
 
         public static readonly double SimplexCenterRadius = 7d;
 
+        private SimplexStates _state;
         private Point? _positionBeforeMoving;
+
+        static SimplexViewModel()
+        {
+            SimplexColors = new Dictionary<SimplexStates, Brush>();
+            SimplexColors.Add(SimplexStates.None, Brushes.Gray);
+            SimplexColors.Add(SimplexStates.MouseOn, Brushes.Black);
+            SimplexColors.Add(SimplexStates.Fixed, Brushes.Black);
+            SimplexColors.Add(SimplexStates.ContainingVertex, Brushes.Maroon);
+        }
 
         public SimplexViewModel(HypergraphViewModel hypergraphViewModel, SimplexModel model, Action<object, MouseEventArgs> onMouseMove, Point centerPoint)
         {
@@ -26,7 +37,6 @@ namespace Diploma.UI.ViewModels.Hypergraph
             {
                 Width = SimplexCenterRadius * 2
                 , Height = SimplexCenterRadius * 2
-                , Fill = Brushes.Gray
             };
             Canvas.SetLeft(Center, centerPoint.X - SimplexCenterRadius);
             Canvas.SetTop(Center, centerPoint.Y - SimplexCenterRadius);
@@ -37,11 +47,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 {
                     return;
                 }
-                Center.Fill = Brushes.Black;
-                for (var i = 0; i < Edges.Length; i++)
-                {
-                    Edges[i].Stroke = Brushes.Black;
-                }
+                State = SimplexStates.MouseOn;
             };
             Center.MouseLeave += (sender, eventArgs) =>
             {
@@ -49,21 +55,13 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 {
                     return;
                 }
-                Center.Fill = Brushes.Gray;
-                for (var i = 0; i < Edges.Length; i++)
-                {
-                    Edges[i].Stroke = Brushes.Gray;
-                }
+                State = SimplexStates.None;
             };
             Center.MouseDown += (sender, eventArgs) =>
             {
                 PositionBeforeMoving = new Point(Canvas.GetLeft(Center), Canvas.GetTop(Center));
                 HypergraphViewModel.CapturedSimplex = this;
-                Center.Fill = Brushes.Black;
-                for (var i = 0; i < Edges.Length; i++)
-                {
-                    Edges[i].Stroke = Brushes.Black;
-                }
+                State = SimplexStates.Fixed;
             };
             Center.MouseUp += (sender, eventArgs) =>
             {
@@ -91,11 +89,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 }
                 if (!ReferenceEquals(HypergraphViewModel.CapturedSimplex, this) || Center.IsMouseOver)
                 {
-                    Center.Fill = Brushes.Black;
-                    for (var i = 0; i < Edges.Length; i++)
-                    {
-                        Edges[i].Stroke = Brushes.Black;
-                    }
+                    State = SimplexStates.MouseOn;
                 }
                 HypergraphViewModel.CapturedSimplex = null;
             };
@@ -141,12 +135,13 @@ namespace Diploma.UI.ViewModels.Hypergraph
                     , Y1 = centerPoint.Y
                     , X2 = destinationPoint.X
                     , Y2 = destinationPoint.Y
-                    , Stroke = Brushes.Gray
                     , StrokeThickness = 1
                 };
                 Canvas.SetZIndex(Edges[i], 0);
                 Edges[i].MouseMove += new MouseEventHandler(onMouseMove);
             }
+
+            State = SimplexStates.None;
         }
 
         public SimplexModel Model
@@ -175,6 +170,46 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 _positionBeforeMoving = value;
         }
 
+        public SimplexStates State
+        {
+            get =>
+                _state;
+
+            set
+            {
+                _state = value;
+                Center.Dispatcher.Invoke(new Action(() =>
+                {
+                    Center.Fill = SimplexColors[State];
+                }));
+                for (var i = 0; i < Edges.Length; i++)
+                {
+                    Edges[i].Dispatcher.Invoke(new Action(() =>
+                    {
+                        Edges[i].Stroke = SimplexColors[State];
+                        if (State == SimplexStates.ContainingVertex)
+                        {
+                            Edges[i].StrokeThickness = 2;
+                        }
+                        else
+                        {
+                            Edges[i].StrokeThickness = 1;
+                        }
+                    }));
+                }
+            }
+        }
+
+        private static Dictionary<SimplexStates, Brush> SimplexColors;
+
+    }
+
+    public enum SimplexStates
+    {
+        None
+        , MouseOn
+        , Fixed
+        , ContainingVertex
     }
 
 }

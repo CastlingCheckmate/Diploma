@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              Width="202"
-             Height="202">
+             Height="202"
+             IsVisibleChanged="UserControl_IsVisibleChanged">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,59 +14,90 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Canvas Opacity="0.5">
+    <Canvas x:Name="_host">
         <Path Fill="Gray"
-              Stroke="Black">
+              Opacity="0.7"
+              Stroke="Black"
+              MouseMove="EllipseGeometry_MouseMove"
+              MouseUp="EllipseGeometry_MouseUp">
             <Path.Data>
                 <EllipseGeometry Center="101,101"
                                  RadiusX="100"
                                  RadiusY="100" />
             </Path.Data>
         </Path>
-        <Button Canvas.Left="70"
-                Canvas.Top="172"
-                Width="10"
-                Height="20"
-                Style="{StaticResource ButtonFlatStyle}">
-            <Button.LayoutTransform>
-                <RotateTransform CenterX="0.5"
-                                 CenterY="0.5"
-                                 Angle="15" />
-            </Button.LayoutTransform>
-        </Button>
-        <Button Canvas.Left="120"
-                Canvas.Top="172"
-                Width="10"
-                Height="20"
-                Style="{StaticResource ButtonFlatStyle}">
-            <Button.LayoutTransform>
-                <RotateTransform CenterX="0.5"
-                                 CenterY="0.5"
-                                 Angle="-17" />
-            </Button.LayoutTransform>
-        </Button>
         <Path Fill="Transparent"
               Stroke="Black"
-              StrokeThickness="2">
+              StrokeThickness="2"
+              MouseMove="EllipseGeometry_MouseMove"
+              PreviewMouseUp="EllipseGeometry_MouseUp">
             <Path.Data>
                 <PathGeometry>
                     <PathGeometry.Figures>
                         <PathFigure StartPoint="65,180"
                                     IsClosed="False">
-                            <ArcSegment Point="137,180" Size="88 88" SweepDirection="Clockwise" IsLargeArc="True" />
+                            <ArcSegment Point="137,180"
+                                        Size="87 87"
+                                        SweepDirection="Clockwise"
+                                        IsLargeArc="True" />
                         </PathFigure>
                     </PathGeometry.Figures>
-                    </PathGeometry>
+                </PathGeometry>
             </Path.Data>
         </Path>
         <Path Fill="Gray"
               Stroke="Black"
-              Opacity="0.8">
+              Opacity="0.8"
+              MouseLeftButtonDown="EllipseGeometry_MouseDown"
+              MouseLeftButtonUp="EllipseGeometry_MouseUp"
+              MouseMove="EllipseGeometry_MouseMove">
             <Path.Data>
-                <EllipseGeometry Center="61,177"
+                <EllipseGeometry x:Name="_scroll"
                                  RadiusX="10"
                                  RadiusY="10" />
             </Path.Data>
         </Path>
+        <Button Canvas.Left="70"
+                Canvas.Top="172"
+                Width="10"
+                Height="20"
+                Padding="0"
+                Style="{StaticResource ButtonFlatStyle}"
+                MouseMove="EllipseGeometry_MouseMove"
+                PreviewMouseUp="EllipseGeometry_MouseUp"
+                Click="Button_Click">
+            <Button.LayoutTransform>
+                <RotateTransform CenterX="0.5"
+                                 CenterY="0.5"
+                                 Angle="15" />
+            </Button.LayoutTransform>
+            <Polygon Width="Auto"
+                     Height="Auto"
+                     Points="0,0.8 0,15.5 6,8.5"
+                     Stroke="Black"
+                     StrokeThickness="0"
+                     Fill="Black" />
+        </Button>
+        <Button Canvas.Right="70"
+                Canvas.Top="172"
+                Width="10"
+                Height="20"
+                Padding="0"
+                Style="{StaticResource ButtonFlatStyle}"
+                MouseMove="EllipseGeometry_MouseMove"
+                PreviewMouseUp="EllipseGeometry_MouseUp"
+                Click="Button_Click_1">
+            <Button.LayoutTransform>
+                <RotateTransform CenterX="0.5"
+                                 CenterY="0.5"
+                                 Angle="-15" />
+            </Button.LayoutTransform>
+            <Polygon Width="Auto"
+                     Height="Auto"
+                     Points="6,0.8 6,15.5 0,8.5"
+                     Stroke="Black"
+                     StrokeThickness="0"
+                     Fill="Black" />
+        </Button>
     </Canvas>
 </UserControl>
