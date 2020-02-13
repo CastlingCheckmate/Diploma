@@ -1,6 +1,6 @@
 ﻿<records>
   <!-- Common -->
-  <record name="DiplomaTitle">(en)Редукционный алгоритм восстановления n-комплексов по вектору степеней вершин</record>
+  <record name="DiplomaTitle">Reduction algorithm for recovering n-complexes from vertices grades vectors</record>
   <!-- Main view -->
   <record name="MainViewHeader">Diploma</record>
   <record name="HelpButtonToolTip">Help [F1]</record>
@@ -8,6 +8,7 @@
   <record name="CloseButtonToolTip">Quit [Esc]</record>
   <record name="SimplexVerticesCount">Simplex vertices count:</record>
   <record name="VerticesGradesVector">Vertices grades vector:</record>
+  <record name="VerticesGradesVectorHint">Input vector of vertices grades separated by the space</record>
   <record name="Restore">Restore</record>
   <record name="Clear">Clear</record>
   <record name="VerticesGradesVectorCantBeRestored">Vertices grades vector can't be restored into {0}-complex!</record>

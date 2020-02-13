@@ -1,6 +1,6 @@
 ﻿<records>
   <!-- Common -->
-  <record name="DiplomaTitle">Редукционный алгоритм восстановления n-комплексов по вектору степеней вершин</record>
+  <record name="DiplomaTitle">Редукционный алгоритм восстановления n-комплексов из векторов степеней вершин</record>
   <!-- Main view -->
   <record name="MainViewHeader">Диплом</record>
   <record name="HelpButtonToolTip">Помощь [F1]</record>
@@ -8,6 +8,7 @@
   <record name="CloseButtonToolTip">Выход [Esc]</record>
   <record name="SimplexVerticesCount">Количество вершин симплекса:</record>
   <record name="VerticesGradesVector">Вектор степеней вершин:</record>
+  <record name="VerticesGradesVectorHint">Введите степени вершин из вектора степеней вершин через пробел</record>
   <record name="Restore">Восстановить</record>
   <record name="Clear">Очистить</record>
   <record name="VerticesGradesVectorCantBeRestored">Вектор степеней вершин не может быть реализован в {0}-комплекс!</record>
