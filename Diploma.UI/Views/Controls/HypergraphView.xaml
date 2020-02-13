@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
-    <Border BorderBrush="Black" CornerRadius="1" BorderThickness="0.1">
+    <Border BorderBrush="Black"
+            CornerRadius="1"
+            BorderThickness="0.1">
         <Canvas x:Name="_canvas"
                 Background="White" />
     </Border>
