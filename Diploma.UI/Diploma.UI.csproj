@@ -71,6 +71,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\TabItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\VertexSimplicesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,6 +126,9 @@
     </Compile>
     <Compile Include="Views\Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TabItemView.xaml.cs">
+      <DependentUpon>TabItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\VertexSimplicesView.xaml.cs">
       <DependentUpon>VertexSimplicesView.xaml</DependentUpon>
