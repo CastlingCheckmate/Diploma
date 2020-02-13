@@ -84,6 +84,9 @@ namespace Diploma.Localization
 		public string VerticesGradesVector =>
 			_currentLocalization.VerticesGradesVector;
 		
+		public string VerticesGradesVectorHint =>
+			_currentLocalization.VerticesGradesVectorHint;
+		
 		public string Restore =>
 			_currentLocalization.Restore;
 		

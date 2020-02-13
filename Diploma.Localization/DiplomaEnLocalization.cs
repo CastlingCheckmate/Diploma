@@ -21,7 +21,7 @@ namespace Diploma.Localization
 			
 		}
 		
-		private readonly string _diplomaTitle = "(en)Редукционный алгоритм восстановления n-комплексов по вектору степеней вершин";
+		private readonly string _diplomaTitle = "Reduction algorithm for recovering n-complexes from vertices grades vectors";
 		public string DiplomaTitle =>
 			_diplomaTitle;
 		
@@ -48,6 +48,10 @@ namespace Diploma.Localization
 		private readonly string _verticesGradesVector = "Vertices grades vector:";
 		public string VerticesGradesVector =>
 			_verticesGradesVector;
+		
+		private readonly string _verticesGradesVectorHint = "Input vector of vertices grades separated by the space";
+		public string VerticesGradesVectorHint =>
+			_verticesGradesVectorHint;
 		
 		private readonly string _restore = "Restore";
 		public string Restore =>

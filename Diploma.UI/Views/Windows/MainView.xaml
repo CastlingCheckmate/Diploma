@@ -6,6 +6,7 @@
         xmlns:controls="clr-namespace:Diploma.UI.Views.Controls"
         xmlns:converters="clr-namespace:Diploma.UI.Converters"
         xmlns:localization="clr-namespace:Diploma.Localization;assembly=Diploma.Localization"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Style="{StaticResource DiplomaWindowStyle}"
         Title="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=MainViewHeader}"
@@ -125,18 +126,43 @@
                        Margin="15,0,0,0"
                        Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=VerticesGradesVector}"
                        VerticalAlignment="Center" />
-            <!-- TODO: TextBox adorner, хотя похуй, можно и без него думаю -->
             <TextBox Grid.Row="0"
                      Grid.Column="3"
-                     Margin="5,0,0,0"
+                     Margin="5,0,0,0" Style="{StaticResource TextBoxWithBlackBorderStyle}"
                      VerticalContentAlignment="Center"
-                     BorderBrush="Black"
-                     Style="{StaticResource TextBoxWithBlackBorderStyle}"
                      Text="{Binding VectorString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="3"
+                       Margin="8,0,0,0"
+                       IsHitTestVisible="False"
+                       Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=VerticesGradesVectorHint}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Foreground="DarkGray"
+                       FontStyle="Italic">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding VectorString}"
+                                         Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Visibility"
+                                        Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding VectorString}"
+                                         Value="{x:Null}">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <Setter Property="Visibility"
+                                Value="Collapsed"/>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
             <Button x:Name="_restoreHypergraphButton"
                     Grid.Row="0"
                     Grid.Column="4"
-                    Margin="5,0,3,0"
+                    Margin="5,0,0,0"
                     Width="Auto"
                     Style="{StaticResource ButtonFlatStyle}"
                     Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Restore}"

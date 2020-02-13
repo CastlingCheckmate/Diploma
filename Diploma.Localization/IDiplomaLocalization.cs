@@ -25,6 +25,9 @@ namespace Diploma.Localization
 		string VerticesGradesVector
 { get; }
 		
+		string VerticesGradesVectorHint
+{ get; }
+		
 		string Restore
 { get; }
 		
