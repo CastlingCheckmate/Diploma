@@ -79,6 +79,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Resources\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\Shared.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\TabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Windows\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +119,7 @@
     <Compile Include="Converters\ConvertersHost.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Models\CheckBoxMenuItemModel.cs" />
+    <Compile Include="ViewModels\Controls\TabItemViewModel.cs" />
     <Compile Include="ViewModels\Hypergraph\HypergraphViewModel.cs" />
     <Compile Include="ViewModels\Hypergraph\HypergraphComponent.cs" />
     <Compile Include="ViewModels\Hypergraph\SimplexViewModel.cs" />
@@ -219,7 +232,9 @@
   <ItemGroup>
     <Resource Include="Resources\CloseButton.bmp" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Settings\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\MinimizeButton.bmp" />
   </ItemGroup>
@@ -235,6 +250,10 @@
     <Resource Include="Resources\InformationSignIcon.bmp" />
     <Resource Include="Resources\QuestionSignIcon.bmp" />
     <Resource Include="Resources\WarningSignIcon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CloseTabButton.bmp" />
+    <Resource Include="Resources\NewTabButton.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,13 @@
              xmlns:localization="clr-namespace:Diploma.Localization;assembly=Diploma.Localization"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -83,7 +90,7 @@
                 Grid.Column="5"
                 Margin="5,0,3,0"
                 Width="Auto"
-                IsEnabled="{Binding Hypergraph, Converter={x:Static converters:ConvertersHost.NullToFalse}}"
+                IsEnabled="{Binding HypergraphViewModel, Converter={x:Static converters:ConvertersHost.NullToFalse}}"
                 Style="{StaticResource ButtonFlatStyle}"
                 Content="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=Clear}"
                 Command="{Binding ClearCommand}" />
@@ -91,6 +98,6 @@
                                  Grid.Column="0"
                                  Grid.ColumnSpan="6"
                                  Margin="3"
-                                 DataContext="{Binding Hypergraph}" />
+                                 DataContext="{Binding HypergraphViewModel}" />
     </Grid>
 </UserControl>

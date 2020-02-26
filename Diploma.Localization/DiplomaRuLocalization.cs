@@ -68,6 +68,10 @@ namespace Diploma.Localization
 				, value0);
 		}
 		
+		private readonly string _saveResult = "Сохранить?";
+		public string SaveResult =>
+			_saveResult;
+		
 		private readonly string _menu = "Меню";
 		public string Menu =>
 			_menu;

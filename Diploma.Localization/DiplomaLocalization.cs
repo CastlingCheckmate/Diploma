@@ -99,6 +99,9 @@ namespace Diploma.Localization
 				value0);
 		}
 		
+		public string SaveResult =>
+			_currentLocalization.SaveResult;
+		
 		public string Menu =>
 			_currentLocalization.Menu;
 		

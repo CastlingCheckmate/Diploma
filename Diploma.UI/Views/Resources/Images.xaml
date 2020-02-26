@@ -33,10 +33,14 @@
     
     <BitmapImage x:Key="MessageBoxWarningIcon"
                  UriSource="/Diploma.UI;component/Resources/WarningSignIcon.bmp" />
-    
+
     <BitmapImage x:Key="DiplomaIcon"
                  UriSource="/Diploma.UI;component/Resources/DiplomaIcon.bmp" />
     
-    
+    <BitmapImage x:Key="NewTabButton"
+                 UriSource="/Diploma.UI;component/Resources/NewTabButton.bmp" />
+
+    <BitmapImage x:Key="CloseTabButton"
+                 UriSource="/Diploma.UI;component/Resources/CloseTabButton.bmp" />
 
 </ResourceDictionary>

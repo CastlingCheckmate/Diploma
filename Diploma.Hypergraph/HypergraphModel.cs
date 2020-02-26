@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 using Diploma.Extensions;
@@ -6,8 +7,7 @@ using Diploma.Extensions;
 namespace Diploma.Hypergraph
 {
 
-    // TODO: DD
-    [DebuggerDisplay("")]
+    [DebuggerDisplay("{ToString()}")]
     public sealed class HypergraphModel
     {
 
@@ -36,6 +36,11 @@ namespace Diploma.Hypergraph
 
             private set =>
                 _simplices = value;
+        }
+
+        public override string ToString()
+        {
+            return string.Join<SimplexModel>(" ", Simplices);
         }
 
     }

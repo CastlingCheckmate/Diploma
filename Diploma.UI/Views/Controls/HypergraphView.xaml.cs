@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-using Diploma.Hypergraph;
 using Diploma.UI.ViewModels.Hypergraph;
 
 namespace Diploma.UI.Views.Controls
@@ -13,17 +12,17 @@ namespace Diploma.UI.Views.Controls
     public partial class HypergraphView : UserControl
     {
         // TODO: unsubscribe
-        private readonly Action<object, MouseEventArgs> _onMouseMove;
-        private readonly Action<object, MouseButtonEventArgs> _onMouseUp;
+        public readonly Action<object, MouseEventArgs> _onMouseMove;
+        public readonly Action<object, MouseButtonEventArgs> _onMouseUp;
 
         public HypergraphView()
         {
             InitializeComponent();
             DataContextChanged += (sender, eventArgs) =>
             {
-                Rebuild();
                 Redraw();
             };
+
             _onMouseMove = (sender, eventArgs) =>
             {
                 if (ViewModel is null || ViewModel.CapturedSimplex is null)
@@ -75,47 +74,41 @@ namespace Diploma.UI.Views.Controls
                 }
                 ViewModel.CapturedSimplex = null;
             };
+
             Loaded += (sender, eventArgs) =>
             {
-                Window.GetWindow(this).Closing += (_sender, _eventArgs) =>
+                var window = Window.GetWindow(this);
+
+                var mainMenu = (Menu)window.FindName("_mainMenu");
+                var tabs = (TabControl)window.FindName("_tabs");
+                // TODO:
+                //var selectedTab = (TabItem)VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(this));
+                //var simplexVerticesCountNumericUpDown = (NumericUpDown)selectedTab.FindName("_simplexVerticesCount");
+                //var restoreHypergraphButton = (Button)selectedTab.FindName("_restoreHypergraphButton");
+                //var clearButton = (Button)selectedTab.FindName("_clearButton");
+                window.Closing += (_sender, _eventArgs) =>
                 {
                     ViewModel?.Dispose();
-                    Window.GetWindow(this).MouseMove -= new MouseEventHandler(_onMouseMove);
-                    Window.GetWindow(this).MouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
-                    ((Menu)Window.GetWindow(this).FindName("_mainMenu")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
-                    ((NumericUpDown)Window.GetWindow(this).FindName("_simplexVerticesCount")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
-                    ((Button)Window.GetWindow(this).FindName("_restoreHypergraphButton")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
-                    ((Button)Window.GetWindow(this).FindName("_clearButton")).PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    window.MouseMove -= new MouseEventHandler(_onMouseMove);
+                    window.MouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    mainMenu.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    //simplexVerticesCountNumericUpDown.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    //restoreHypergraphButton.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    //clearButton.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
                     _canvas.MouseMove -= new MouseEventHandler(_onMouseMove);
                 };
-                Window.GetWindow(this).MouseMove += new MouseEventHandler(_onMouseMove);
-                Window.GetWindow(this).MouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
-                ((Menu)Window.GetWindow(this).FindName("_mainMenu")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
-                ((NumericUpDown)Window.GetWindow(this).FindName("_simplexVerticesCount")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
-                ((Button)Window.GetWindow(this).FindName("_restoreHypergraphButton")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
-                ((Button)Window.GetWindow(this).FindName("_clearButton")).PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                window.MouseMove += new MouseEventHandler(_onMouseMove);
+                window.MouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                mainMenu.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                //simplexVerticesCountNumericUpDown.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                //restoreHypergraphButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                //clearButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
                 _canvas.MouseMove += new MouseEventHandler(_onMouseMove);
             };
         }
 
-        private HypergraphViewModel ViewModel
-        {
-            get;
-
-            set;
-        }
-
-        public void Rebuild()
-        {
-            ViewModel?.Dispose();
-            ViewModel = null;
-            var model = (HypergraphModel)DataContext;
-            if (model is null)
-            {
-                return;
-            }
-            ViewModel = new HypergraphViewModel(model, this, _onMouseMove);
-        }
+        private HypergraphViewModel ViewModel =>
+            DataContext as HypergraphViewModel;
 
         public void Redraw()
         {

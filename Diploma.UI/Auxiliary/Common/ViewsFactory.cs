@@ -10,9 +10,9 @@ namespace Diploma.UI.Auxiliary.Common
 
         public static MainView CreateMainView()
         {
-            var mainView = new MainView();
-            var mainViewViewModel = new MainViewModel();
-            ViewBinder.Bind(mainView, mainViewViewModel);
+            var mainViewModel = new MainViewModel();
+            var mainView = new MainView(mainViewModel);
+            ViewBinder.Bind(mainView, mainViewModel);
             return mainView;
         }
 
@@ -28,16 +28,16 @@ namespace Diploma.UI.Auxiliary.Common
         public static HelpView CreateHelpView()
         {
             var helpView = new HelpView();
-            var helpViewViewModel = new HelpViewModel();
-            ViewBinder.Bind(helpView, helpViewViewModel);
+            var helpViewModel = new HelpViewModel();
+            ViewBinder.Bind(helpView, helpViewModel);
             return helpView;
         }
 
         public static AboutView CreateAboutView()
         {
             var aboutView = new AboutView();
-            var aboutViewViewModel = new AboutViewModel();
-            ViewBinder.Bind(aboutView, aboutViewViewModel);
+            var aboutViewModel = new AboutViewModel();
+            ViewBinder.Bind(aboutView, aboutViewModel);
             return aboutView;
         }
 

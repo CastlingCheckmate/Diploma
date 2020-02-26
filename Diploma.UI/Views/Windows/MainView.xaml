@@ -3,15 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Diploma.UI.Views.Controls"
+        xmlns:controlsViewModels="clr-namespace:Diploma.UI.ViewModels.Controls"
         xmlns:converters="clr-namespace:Diploma.UI.Converters"
         xmlns:localization="clr-namespace:Diploma.Localization;assembly=Diploma.Localization"
         mc:Ignorable="d"
         Style="{StaticResource DiplomaWindowStyle}"
         Title="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=MainViewHeader}"
-        MaxHeight="{x:Static SystemParameters.MaximizedPrimaryScreenHeight}"
+        MaxHeight="{x:Static SystemParameters.PrimaryScreenHeight}"
+        ResizeMode="NoResize"
         WindowStartupLocation="{StaticResource DiplomaWindowStartupLocation}"
         WindowState="{Binding State}"
-        WindowStyle="None">
+        WindowStyle="None"
+        UseLayoutRounding="true">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -42,14 +46,12 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0"
-                   Margin="1"
                    Source="{StaticResource DiplomaIcon}" />
             <TextBlock Grid.Column="0"
                        Grid.ColumnSpan="5"
                        Style="{StaticResource DiplomaWindowHeaderStyle}"
                        Text="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=DiplomaTitle}" />
             <Image Grid.Column="2"
-                   Margin="1"
                    Source="{StaticResource HelpButton}"
                    ToolTip="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=HelpButtonToolTip}">
                 <Image.InputBindings>
@@ -58,7 +60,7 @@
                 </Image.InputBindings>
             </Image>
             <Image Grid.Column="3"
-                   Margin="1"
+                   Margin="1,0,0,0"
                    Source="{StaticResource MinimizeButton}"
                    ToolTip="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=MinimizeButtonToolTip}">
                 <Image.InputBindings>
@@ -67,7 +69,7 @@
                 </Image.InputBindings>
             </Image>
             <Image Grid.Column="4"
-                   Margin="1"
+                   Margin="1,0,0,0"
                    Source="{StaticResource CloseButton}"
                    ToolTip="{Binding Source={x:Static localization:DiplomaLocalization.Instance}, Path=CloseButtonToolTip}">
                 <Image.InputBindings>
@@ -95,10 +97,70 @@
                           Command="{Binding QuitCommand}" />
             </MenuItem>
         </Menu>
-        
+        <TabControl x:Name="_tabs"
+                    Grid.Row="2"
+                    Margin="3"
+                    ItemsSource="{Binding Tabs}"
+                    SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TabControl.ContentTemplate>
+                <DataTemplate DataType="{x:Type controlsViewModels:TabItemViewModel}">
+                    <controls:TabItemView x:Name="_content" />
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsAddNewTabTabItem}"
+                                     Value="True">
+                            <Setter TargetName="_content"
+                                    Property="Visibility"
+                                    Value="Hidden" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsAddNewTabTabItem}"
+                                     Value="False">
+                            <Setter TargetName="_content"
+                                    Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+            <TabControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type controlsViewModels:TabItemViewModel}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="_header"
+                                   Text="{Binding Header}" />
+                        <Image x:Name="_buttonImage"
+                               Margin="5,0,0,0">
+                            <Image.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding ActionCommand}" />
+                            </Image.InputBindings>
+                        </Image>
+                    </StackPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsAddNewTabTabItem}"
+                                     Value="True">
+                            <DataTrigger.Setters>
+                                <Setter TargetName="_header"
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                                <Setter TargetName="_buttonImage"
+                                        Property="Source"
+                                        Value="{StaticResource NewTabButton}" />
+                                <Setter TargetName="_buttonImage"
+                                        Property="Margin"
+                                        Value="0" />
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsAddNewTabTabItem}"
+                                     Value="False">
+                            <Setter TargetName="_buttonImage"
+                                    Property="Source"
+                                    Value="{StaticResource CloseTabButton}" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
         <StatusBar Grid.Row="3"
-                   VerticalAlignment="Bottom">
-            
-        </StatusBar>
+                   VerticalAlignment="Bottom"
+                   Height="20" />
     </Grid>
 </Window>

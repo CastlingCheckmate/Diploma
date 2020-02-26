@@ -4,6 +4,8 @@
     
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Images.xaml" />
+        <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/TabControl.xaml" />
+        <ResourceDictionary Source="/Diploma.UI;component/Views/Resources/Menu.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="DiplomaWindowHeaderStyle"

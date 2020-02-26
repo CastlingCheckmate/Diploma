@@ -187,14 +187,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
                     Edges[i].Dispatcher.Invoke(new Action(() =>
                     {
                         Edges[i].Stroke = SimplexColors[State];
-                        if (State == SimplexStates.ContainingVertex)
-                        {
-                            Edges[i].StrokeThickness = 2;
-                        }
-                        else
-                        {
-                            Edges[i].StrokeThickness = 1;
-                        }
+                        Edges[i].StrokeThickness = State == SimplexStates.ContainingVertex ? 2 : 1;
                     }));
                 }
             }

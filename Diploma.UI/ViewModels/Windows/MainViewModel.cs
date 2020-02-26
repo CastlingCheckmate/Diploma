@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
-using Diploma.Hypergraph;
 using Diploma.Localization;
 using Diploma.UI.Auxiliary.Commands;
 using Diploma.UI.Auxiliary.Common;
@@ -18,41 +18,64 @@ namespace Diploma.UI.ViewModels.Windows
 
     public class MainViewModel : WindowViewModel
     {
-        private string _vectorString;
+
         private readonly MainViewSettingsModel _settings;
-        private readonly NumericUpDownViewModel _simplexVerticesCountDataContext;
         private WindowState _state;
-        private HypergraphModel _hypergraph;
         private ICommand _showLanguageSelectionCommand;
         private ICommand _showHelpCommand;
         private ICommand _showAboutCommand;
         private ICommand _minimizeCommand;
         private ICommand _quitCommand;
-        private ICommand _restoreCommand;
-        private ICommand _clearCommand;
+        private int _selectedTabIndex;
+
+        private ObservableCollection<TabItemViewModel> _tabs;
 
         public MainViewModel()
         {
             _settings = new MainViewSettingsModel();
-            _simplexVerticesCountDataContext = new NumericUpDownViewModel() { MinValue = 2, MaxValue = 20, Increment = 1, Value = 2 };
             State = WindowState.Maximized;
+            Tabs = new ObservableCollection<TabItemViewModel>();
+            Tabs.Add(new TabItemViewModel(Tabs, false));
+            Tabs.Add(new TabItemViewModel(Tabs, true));
+        }
+
+        private TabControl _tabsView;
+        public TabControl TabsView
+        {
+            set =>
+                _tabsView = value;
         }
 
         public MainViewSettingsModel Settings =>
             _settings;
 
-        public NumericUpDownViewModel SimplexVerticesCountDataContext =>
-            _simplexVerticesCountDataContext;
-
-        public string VectorString
+        public int SelectedTabIndex
         {
             get =>
-                _vectorString;
+                _selectedTabIndex;
 
             set
             {
-                _vectorString = value;
-                NotifyPropertyChanged(nameof(VectorString), nameof(IsValidVectorString));
+                if (value == Tabs.Count - 1)
+                {
+                    _tabsView.ItemsSource = null;
+                    Tabs.Insert(Tabs.Count - 1, new TabItemViewModel(Tabs, false));
+                    _tabsView.ItemsSource = Tabs;
+                }
+                _selectedTabIndex = value;
+                NotifyPropertyChanged(nameof(SelectedTabIndex));
+            }
+        }
+
+        public ObservableCollection<TabItemViewModel> Tabs
+        {
+            get =>
+                _tabs;
+
+            private set
+            {
+                _tabs = value;
+                NotifyPropertyChanged(nameof(Tabs));
             }
         }
 
@@ -65,18 +88,6 @@ namespace Diploma.UI.ViewModels.Windows
             {
                 _state = value;
                 NotifyPropertyChanged(nameof(State));
-            }
-        }
-
-        public HypergraphModel Hypergraph
-        {
-            get =>
-                _hypergraph;
-
-            set
-            {
-                _hypergraph = value;
-                NotifyPropertyChanged(nameof(Hypergraph));
             }
         }
 
@@ -95,34 +106,6 @@ namespace Diploma.UI.ViewModels.Windows
 
         public ICommand MinimizeCommand =>
             _minimizeCommand ?? (_minimizeCommand = new RelayCommand(_ => Minimize()));
-
-        public ICommand RestoreCommand =>
-            _restoreCommand ?? (_restoreCommand = new RelayCommand(_ => Restore(),
-                _ => IsValidVectorString));
-
-        public ICommand ClearCommand =>
-            _clearCommand ?? (_clearCommand = new RelayCommand(_ => Clear(),
-                _ => Hypergraph != null));
-
-        public bool IsValidVectorString
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(VectorString))
-                {
-                    return false;
-                }
-                var gradesStrings = VectorString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var gradeString in gradesStrings)
-                {
-                    if (!int.TryParse(gradeString, out int grade) || grade <= 0)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
 
         private void ShowLanguageSelection()
         {
@@ -160,28 +143,6 @@ namespace Diploma.UI.ViewModels.Windows
         private void Minimize()
         {
             State = WindowState.Minimized;
-        }
-
-        private void Restore()
-        {
-            VectorString = string.Join(" ", VectorString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
-            var verticesGradesVector = VectorString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(vertexGradeString => int.Parse(vertexGradeString))
-                .ToArray();
-            var restoredHypergraph = ReductionAlgorithm.ReductionRecovery(verticesGradesVector, SimplexVerticesCountDataContext.Value);
-            if (restoredHypergraph is null)
-            {
-                MessageBox.Show(MessageBoxTypes.Error, DiplomaLocalization.Instance.Error,
-                    DiplomaLocalization.Instance.VerticesGradesVectorCantBeRestored(SimplexVerticesCountDataContext.Value - 1), MessageBoxButtons.Ok);
-                return;
-            }
-            Hypergraph = restoredHypergraph;
-        }
-
-        private void Clear()
-        {
-            VectorString = string.Empty;
-            Hypergraph = null;
         }
 
     }

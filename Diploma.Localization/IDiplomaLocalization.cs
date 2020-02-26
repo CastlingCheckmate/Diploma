@@ -37,6 +37,9 @@ namespace Diploma.Localization
 		string VerticesGradesVectorCantBeRestored
 (object value0);
 		
+		string SaveResult
+{ get; }
+		
 		string Menu
 { get; }
 		

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Diploma.UI.Converters
+﻿namespace Diploma.UI.Converters
 {
 
     public static class ConvertersHost

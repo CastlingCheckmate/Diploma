@@ -12,6 +12,7 @@
   <record name="Restore">Восстановить</record>
   <record name="Clear">Очистить</record>
   <record name="VerticesGradesVectorCantBeRestored">Вектор степеней вершин не может быть реализован в {0}-комплекс!</record>
+  <record name="SaveResult">Сохранить?</record>
   <!-- Menu -->
   <record name="Menu">Меню</record>
   <record name="FileMenuItem">Файл</record>
