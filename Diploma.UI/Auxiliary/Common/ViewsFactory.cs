@@ -1,4 +1,6 @@
-﻿using Diploma.UI.Auxiliary.MessageBox;
+﻿using System.Windows.Controls;
+
+using Diploma.UI.Auxiliary.MessageBox;
 using Diploma.UI.ViewModels.Windows;
 using Diploma.UI.Views.Windows;
 
@@ -11,8 +13,11 @@ namespace Diploma.UI.Auxiliary.Common
         public static MainView CreateMainView()
         {
             var mainViewModel = new MainViewModel();
-            var mainView = new MainView(mainViewModel);
+            var mainView = new MainView();
+            // TODO: this is shitty
+            var mainViewTabControl = (TabControl)mainView.FindName("_tabs");
             ViewBinder.Bind(mainView, mainViewModel);
+            mainViewModel.TabsView = mainViewTabControl;
             return mainView;
         }
 

@@ -1,5 +1,4 @@
-﻿using Diploma.UI.ViewModels.Windows;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Diploma.UI.Views.Windows
 {
@@ -10,12 +9,6 @@ namespace Diploma.UI.Views.Windows
         public MainView()
         {
             InitializeComponent();
-        }
-
-        public MainView(MainViewModel mainViewModel)
-            : this()
-        {
-            mainViewModel.TabsView = _tabs;
         }
 
     }

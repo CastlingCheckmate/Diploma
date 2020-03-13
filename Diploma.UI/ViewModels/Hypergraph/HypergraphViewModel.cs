@@ -5,7 +5,6 @@ using System.Windows.Input;
 
 using Diploma.Extensions;
 using Diploma.Hypergraph;
-using Diploma.UI.Auxiliary.Hypergraph;
 using Diploma.UI.Views.Controls;
 
 namespace Diploma.UI.ViewModels.Hypergraph
@@ -16,17 +15,15 @@ namespace Diploma.UI.ViewModels.Hypergraph
 
         private SimplexViewModel _capturedSimplex;
         private VertexSimplicesViewModel _capturedVertexSimplices;
+        private HypergraphView _hypergraphView;
+        private Action<object, MouseEventArgs> _onMouseMove;
 
-        public HypergraphViewModel(HypergraphModel model, HypergraphView hypergraphView, Action<object, MouseEventArgs> onMouseMove)
+        public HypergraphViewModel(HypergraphModel model, Action<object, MouseEventArgs> onMouseMove)
         {
-            HypergraphView = hypergraphView;
             Model = model;
-            Vertices = Model.Vertices.Select(vertexModel => new VertexViewModel(this, vertexModel, onMouseMove
-                , CoordinatesCalculator.GetVertexCenterPoint(new Size(hypergraphView.ActualWidth, hypergraphView.ActualHeight), Model.Vertices.Length, vertexModel))).ToArray();
-            Simplices = Model.Simplices.Select(simplexModel => new SimplexViewModel(this, simplexModel, onMouseMove
-                , CoordinatesCalculator.GetSimplexCenterPoint(new Size(hypergraphView.ActualWidth, hypergraphView.ActualHeight), Model.Vertices.Length, simplexModel))).ToArray();
             CapturedSimplex = null;
             CapturedVertexSimplices = null;
+            _onMouseMove = onMouseMove;
         }
 
         public HypergraphModel Model
@@ -36,12 +33,34 @@ namespace Diploma.UI.ViewModels.Hypergraph
 
         public HypergraphView HypergraphView
         {
-            get;
+            get =>
+                _hypergraphView;
+
+            set
+            {
+                if (_hypergraphView != null)
+                {
+                    return;
+                }
+                _hypergraphView = value;
+                Vertices = new VertexViewModel[Model.Vertices.Length];
+                for (var i = 0; i < Vertices.Length; i++)
+                {
+                    Vertices[i] = new VertexViewModel(this, Model.Vertices[i], _onMouseMove);
+                }
+                Simplices = new SimplexViewModel[Model.Simplices.Length];
+                for (var i = 0; i < Simplices.Length; i++)
+                {
+                    Simplices[i] = new SimplexViewModel(this, Model.Simplices[i], _onMouseMove);
+                }
+            }
         }
 
         public VertexViewModel[] Vertices
         {
             get;
+
+            private set;
         }
 
         public VertexViewModel[] SimplexContains(SimplexViewModel simplexViewModel)
@@ -52,6 +71,8 @@ namespace Diploma.UI.ViewModels.Hypergraph
         public SimplexViewModel[] Simplices
         {
             get;
+
+            private set;
         }
 
         public SimplexViewModel[] ContainingVertex(VertexViewModel vertexViewModel)

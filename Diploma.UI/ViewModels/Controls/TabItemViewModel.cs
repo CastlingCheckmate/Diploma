@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 using Diploma.Hypergraph;
@@ -22,7 +23,7 @@ namespace Diploma.UI.ViewModels.Controls
         private bool _isAddNewTabTabItem;
         private string _vectorString;
         private HypergraphViewModel _hypergraphViewModel;
-        private HypergraphView _view;
+        private TabControl _tabsView;
         private ICommand _restoreCommand;
         private ICommand _clearCommand;
         private ICommand _actionCommand;
@@ -32,9 +33,11 @@ namespace Diploma.UI.ViewModels.Controls
         public string Header =>
             _header;
 
-        public TabItemViewModel(ObservableCollection<TabItemViewModel> tabs, bool isAddNewTabTabItem)
+        public TabItemViewModel(ObservableCollection<TabItemViewModel> tabs, TabControl view, bool isAddNewTabTabItem)
         {
             _tabs = tabs;
+            _tabsView = view;
+            
             IsAddNewTabTabItem = isAddNewTabTabItem;
             _simplexVerticesCountDataContext = new NumericUpDownViewModel() { MinValue = 2, MaxValue = 20, Increment = 1, Value = 2 };
         }
@@ -122,7 +125,8 @@ namespace Diploma.UI.ViewModels.Controls
                     DiplomaLocalization.Instance.VerticesGradesVectorCantBeRestored(SimplexVerticesCountDataContext.Value - 1), MessageBoxButtons.Ok);
                 return;
             }
-            HypergraphViewModel = new HypergraphViewModel(restoredHypergraph, _view, _view._onMouseMove);
+            var ind = _tabs.IndexOf(this);
+            HypergraphViewModel = new HypergraphViewModel(restoredHypergraph, (e, e1) => { });
         }
 
         private void Clear()
@@ -136,7 +140,7 @@ namespace Diploma.UI.ViewModels.Controls
         {
             if (IsAddNewTabTabItem)
             {
-                _tabs.Insert(_tabs.Count - 1, new TabItemViewModel(_tabs, false));
+                _tabs.Insert(_tabs.Count - 1, new TabItemViewModel(_tabs, _tabsView, false));
             }
             else
             {

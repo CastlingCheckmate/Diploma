@@ -20,6 +20,7 @@ namespace Diploma.UI.Views.Controls
             InitializeComponent();
             DataContextChanged += (sender, eventArgs) =>
             {
+                
                 Redraw();
             };
 
@@ -78,33 +79,52 @@ namespace Diploma.UI.Views.Controls
             Loaded += (sender, eventArgs) =>
             {
                 var window = Window.GetWindow(this);
-
                 var mainMenu = (Menu)window.FindName("_mainMenu");
                 var tabs = (TabControl)window.FindName("_tabs");
-                // TODO:
-                //var selectedTab = (TabItem)VisualTreeHelper.GetParent(VisualTreeHelper.GetParent(this));
-                //var simplexVerticesCountNumericUpDown = (NumericUpDown)selectedTab.FindName("_simplexVerticesCount");
-                //var restoreHypergraphButton = (Button)selectedTab.FindName("_restoreHypergraphButton");
-                //var clearButton = (Button)selectedTab.FindName("_clearButton");
+                var selectedTabView = FindParent<TabItemView>(this);
+                // TODO: is this needed?!
+                //var selectedTab = FindParent<TabItem>(selectedTabView);
+                var simplexVerticesCountNumericUpDown = (NumericUpDown)selectedTabView.FindName("_simplexVerticesCount");
+                var restoreHypergraphButton = (Button)selectedTabView.FindName("_restoreHypergraphButton");
+                var clearButton = (Button)selectedTabView.FindName("_clearButton");
                 window.Closing += (_sender, _eventArgs) =>
                 {
                     ViewModel?.Dispose();
                     window.MouseMove -= new MouseEventHandler(_onMouseMove);
                     window.MouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
                     mainMenu.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
-                    //simplexVerticesCountNumericUpDown.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
-                    //restoreHypergraphButton.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
-                    //clearButton.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    simplexVerticesCountNumericUpDown.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    restoreHypergraphButton.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
+                    clearButton.PreviewMouseLeftButtonUp -= new MouseButtonEventHandler(_onMouseUp);
                     _canvas.MouseMove -= new MouseEventHandler(_onMouseMove);
                 };
                 window.MouseMove += new MouseEventHandler(_onMouseMove);
                 window.MouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
                 mainMenu.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
-                //simplexVerticesCountNumericUpDown.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
-                //restoreHypergraphButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
-                //clearButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                simplexVerticesCountNumericUpDown.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                restoreHypergraphButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
+                clearButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(_onMouseUp);
                 _canvas.MouseMove += new MouseEventHandler(_onMouseMove);
             };
+
+            T FindParent<T>(DependencyObject child)
+                where T : DependencyObject
+            {
+                var parentObject = VisualTreeHelper.GetParent(child);
+                if (parentObject == null)
+                {
+                    return null;
+                }
+                var parent = parentObject as T;
+                if (parent != null)
+                {
+                    return parent;
+                }
+                else
+                {
+                    return FindParent<T>(parentObject);
+                }
+            }
         }
 
         private HypergraphViewModel ViewModel =>
@@ -117,6 +137,7 @@ namespace Diploma.UI.Views.Controls
             {
                 return;
             }
+            ViewModel.HypergraphView = this;
             foreach (var vertexViewModel in ViewModel.Vertices)
             {
                 _canvas.Children.Add(vertexViewModel.VertexView);

@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 
 using Diploma.Localization;
@@ -35,15 +34,24 @@ namespace Diploma.UI.ViewModels.Windows
             _settings = new MainViewSettingsModel();
             State = WindowState.Maximized;
             Tabs = new ObservableCollection<TabItemViewModel>();
-            Tabs.Add(new TabItemViewModel(Tabs, false));
-            Tabs.Add(new TabItemViewModel(Tabs, true));
         }
 
         private TabControl _tabsView;
         public TabControl TabsView
         {
-            set =>
+            private get =>
+                _tabsView;
+
+            set
+            {
+                if (TabsView != null)
+                {
+                    return;
+                }
                 _tabsView = value;
+                Tabs.Add(new TabItemViewModel(Tabs, TabsView, false));
+                Tabs.Add(new TabItemViewModel(Tabs, TabsView, true));
+            }
         }
 
         public MainViewSettingsModel Settings =>
@@ -59,7 +67,7 @@ namespace Diploma.UI.ViewModels.Windows
                 if (value == Tabs.Count - 1)
                 {
                     _tabsView.ItemsSource = null;
-                    Tabs.Insert(Tabs.Count - 1, new TabItemViewModel(Tabs, false));
+                    Tabs.Insert(Tabs.Count - 1, new TabItemViewModel(Tabs, TabsView, false));
                     _tabsView.ItemsSource = Tabs;
                 }
                 _selectedTabIndex = value;

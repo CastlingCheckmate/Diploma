@@ -7,8 +7,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
+using Diploma.Extensions;
 using Diploma.Hypergraph;
-using Diploma.UI.Views.Controls;
+using Diploma.UI.Auxiliary.Hypergraph;
 
 namespace Diploma.UI.ViewModels.Hypergraph
 {
@@ -29,9 +30,11 @@ namespace Diploma.UI.ViewModels.Hypergraph
             VertexColors.Add(VertexStates.SimplicesViewActive, Brushes.Transparent);
         }
 
-        public VertexViewModel(HypergraphViewModel hypergraphViewModel, VertexModel model, Action<object, MouseEventArgs> onMouseMove, Point centerPoint)
+        public VertexViewModel(HypergraphViewModel hypergraphViewModel, VertexModel model, Action<object, MouseEventArgs> onMouseMove)
         {
             HypergraphViewModel = hypergraphViewModel;
+            var centerPoint = CoordinatesCalculator.GetVertexCenterPoint(new Size(HypergraphViewModel.HypergraphView.ActualWidth, HypergraphViewModel.HypergraphView.ActualHeight),
+                HypergraphViewModel.Vertices.Length, model);
             Model = model;
             _onMouseUp = (sender, eventArgs) =>
             {
@@ -136,7 +139,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             }
         }
 
-        private static Dictionary<VertexStates, Brush> VertexColors;
+        private static readonly Dictionary<VertexStates, Brush> VertexColors;
 
     }
 

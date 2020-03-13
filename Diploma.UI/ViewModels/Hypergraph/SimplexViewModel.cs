@@ -29,9 +29,11 @@ namespace Diploma.UI.ViewModels.Hypergraph
             SimplexColors.Add(SimplexStates.ContainingVertex, Brushes.Maroon);
         }
 
-        public SimplexViewModel(HypergraphViewModel hypergraphViewModel, SimplexModel model, Action<object, MouseEventArgs> onMouseMove, Point centerPoint)
+        public SimplexViewModel(HypergraphViewModel hypergraphViewModel, SimplexModel model, Action<object, MouseEventArgs> onMouseMove)
         {
             HypergraphViewModel = hypergraphViewModel;
+            var centerPoint = CoordinatesCalculator.GetSimplexCenterPoint(new Size(HypergraphViewModel.HypergraphView.ActualWidth, HypergraphViewModel.HypergraphView.ActualHeight),
+                HypergraphViewModel.Vertices.Length, model);
             Model = model;
             Center = new Ellipse()
             {
@@ -193,7 +195,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             }
         }
 
-        private static Dictionary<SimplexStates, Brush> SimplexColors;
+        private static readonly Dictionary<SimplexStates, Brush> SimplexColors;
 
     }
 
