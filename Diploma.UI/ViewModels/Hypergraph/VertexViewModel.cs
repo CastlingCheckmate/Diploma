@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-using Diploma.Extensions;
 using Diploma.Hypergraph;
 using Diploma.UI.Auxiliary.Hypergraph;
 
@@ -17,20 +16,23 @@ namespace Diploma.UI.ViewModels.Hypergraph
     public sealed class VertexViewModel : HypergraphComponent, IDisposable
     {
 
-        public static readonly double VertexRadius = 15d;
+        public const double VertexRadius = 15d;
+        private const int VertexZIndex = 2;
 
         private readonly Action<object, MouseButtonEventArgs> _onMouseUp;
         private VertexStates _state;
 
         static VertexViewModel()
         {
-            VertexColors = new Dictionary<VertexStates, Brush>();
-            VertexColors.Add(VertexStates.None, Brushes.Gray);
-            VertexColors.Add(VertexStates.MouseOn, Brushes.Black);
-            VertexColors.Add(VertexStates.SimplicesViewActive, Brushes.Transparent);
+            VertexColors = new Dictionary<VertexStates, Brush>()
+            {
+                { VertexStates.None, Brushes.Gray },
+                { VertexStates.MouseOn, Brushes.Black},
+                { VertexStates.SimplicesViewActive, Brushes.Transparent }
+            };
         }
 
-        public VertexViewModel(HypergraphViewModel hypergraphViewModel, VertexModel model, Action<object, MouseEventArgs> onMouseMove)
+        public VertexViewModel(HypergraphViewModel hypergraphViewModel, VertexModel model)
         {
             HypergraphViewModel = hypergraphViewModel;
             var centerPoint = CoordinatesCalculator.GetVertexCenterPoint(new Size(HypergraphViewModel.HypergraphView.ActualWidth, HypergraphViewModel.HypergraphView.ActualHeight),
@@ -64,7 +66,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             Canvas.SetLeft(VertexView, centerPoint.X - VertexRadius);
             Canvas.SetTop(VertexView, centerPoint.Y - VertexRadius);
-            Canvas.SetZIndex(VertexView, 2);
+            Canvas.SetZIndex(VertexView, VertexZIndex);
             VertexView.MouseEnter += (sender, eventArgs) =>
             {
                 if (HypergraphViewModel.CapturedSimplex != null)
@@ -80,9 +82,8 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 State = VertexStates.None;
             };
             VertexView.MouseUp += new MouseButtonEventHandler(_onMouseUp);
-            VertexView.MouseMove += new MouseEventHandler(onMouseMove);
 
-            VertexSimplicesViewModel = new VertexSimplicesViewModel(HypergraphViewModel, this, centerPoint, onMouseMove, _onMouseUp);
+            VertexSimplicesViewModel = new VertexSimplicesViewModel(HypergraphViewModel, this, centerPoint, _onMouseUp);
             AfterVertexEnter.Elapsed += async (sender, eventArgs) =>
             {
                 HypergraphViewModel.CapturedVertexSimplices = VertexSimplicesViewModel;

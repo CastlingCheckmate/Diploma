@@ -16,14 +16,12 @@ namespace Diploma.UI.ViewModels.Hypergraph
         private SimplexViewModel _capturedSimplex;
         private VertexSimplicesViewModel _capturedVertexSimplices;
         private HypergraphView _hypergraphView;
-        private Action<object, MouseEventArgs> _onMouseMove;
 
-        public HypergraphViewModel(HypergraphModel model, Action<object, MouseEventArgs> onMouseMove)
+        public HypergraphViewModel(HypergraphModel model)
         {
             Model = model;
             CapturedSimplex = null;
             CapturedVertexSimplices = null;
-            _onMouseMove = onMouseMove;
         }
 
         public HypergraphModel Model
@@ -46,12 +44,12 @@ namespace Diploma.UI.ViewModels.Hypergraph
                 Vertices = new VertexViewModel[Model.Vertices.Length];
                 for (var i = 0; i < Vertices.Length; i++)
                 {
-                    Vertices[i] = new VertexViewModel(this, Model.Vertices[i], _onMouseMove);
+                    Vertices[i] = new VertexViewModel(this, Model.Vertices[i]);
                 }
                 Simplices = new SimplexViewModel[Model.Simplices.Length];
                 for (var i = 0; i < Simplices.Length; i++)
                 {
-                    Simplices[i] = new SimplexViewModel(this, Model.Simplices[i], _onMouseMove);
+                    Simplices[i] = new SimplexViewModel(this, Model.Simplices[i]);
                 }
             }
         }

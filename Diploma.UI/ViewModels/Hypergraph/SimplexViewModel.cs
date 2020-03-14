@@ -15,21 +15,25 @@ namespace Diploma.UI.ViewModels.Hypergraph
     public sealed class SimplexViewModel : HypergraphComponent
     {
 
-        public static readonly double SimplexCenterRadius = 7d;
+        public const double SimplexCenterRadius = 7d;
+        private const int SimplexEdgesZIndex = 0;
+        private const int SimplexCenterZIndex = 1;
 
         private SimplexStates _state;
         private Point? _positionBeforeMoving;
 
         static SimplexViewModel()
         {
-            SimplexColors = new Dictionary<SimplexStates, Brush>();
-            SimplexColors.Add(SimplexStates.None, Brushes.Gray);
-            SimplexColors.Add(SimplexStates.MouseOn, Brushes.Black);
-            SimplexColors.Add(SimplexStates.Fixed, Brushes.Black);
-            SimplexColors.Add(SimplexStates.ContainingVertex, Brushes.Maroon);
+            SimplexColors = new Dictionary<SimplexStates, Brush>()
+            {
+                { SimplexStates.None, Brushes.Gray },
+                { SimplexStates.MouseOn, Brushes.Black },
+                { SimplexStates.Fixed, Brushes.Black },
+                { SimplexStates.ContainingVertex, Brushes.Maroon }
+            };
         }
 
-        public SimplexViewModel(HypergraphViewModel hypergraphViewModel, SimplexModel model, Action<object, MouseEventArgs> onMouseMove)
+        public SimplexViewModel(HypergraphViewModel hypergraphViewModel, SimplexModel model)
         {
             HypergraphViewModel = hypergraphViewModel;
             var centerPoint = CoordinatesCalculator.GetSimplexCenterPoint(new Size(HypergraphViewModel.HypergraphView.ActualWidth, HypergraphViewModel.HypergraphView.ActualHeight),
@@ -42,7 +46,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             Canvas.SetLeft(Center, centerPoint.X - SimplexCenterRadius);
             Canvas.SetTop(Center, centerPoint.Y - SimplexCenterRadius);
-            Canvas.SetZIndex(Center, 1);
+            Canvas.SetZIndex(Center, SimplexCenterZIndex);
             Center.MouseEnter += (sender, eventArgs) =>
             {
                 if (HypergraphViewModel.CapturedSimplex != null)
@@ -139,8 +143,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
                     , Y2 = destinationPoint.Y
                     , StrokeThickness = 1
                 };
-                Canvas.SetZIndex(Edges[i], 0);
-                Edges[i].MouseMove += new MouseEventHandler(onMouseMove);
+                Canvas.SetZIndex(Edges[i], SimplexEdgesZIndex);
             }
 
             State = SimplexStates.None;

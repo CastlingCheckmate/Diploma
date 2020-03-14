@@ -12,8 +12,9 @@ namespace Diploma.UI.ViewModels.Hypergraph
     public sealed class VertexSimplicesViewModel : IDisposable
     {
 
-        public VertexSimplicesViewModel(HypergraphViewModel hypergraphViewModel, VertexViewModel vertexViewModel, Point centerPoint
-            , Action<object, MouseEventArgs> onMouseMove, Action<object, MouseButtonEventArgs> onMouseUp)
+        private const int VertexSimplicesZIndex = 3;
+
+        public VertexSimplicesViewModel(HypergraphViewModel hypergraphViewModel, VertexViewModel vertexViewModel, Point centerPoint, Action<object, MouseButtonEventArgs> onMouseUp)
         {
             HypergraphViewModel = hypergraphViewModel;
             VertexViewModel = vertexViewModel;
@@ -24,7 +25,7 @@ namespace Diploma.UI.ViewModels.Hypergraph
             };
             Canvas.SetLeft(VertexSimplicesView, centerPoint.X - VertexSimplicesView.Width / 2);
             Canvas.SetTop(VertexSimplicesView, centerPoint.Y - VertexSimplicesView.Height / 2);
-            Canvas.SetZIndex(VertexSimplicesView, 3);
+            Canvas.SetZIndex(VertexSimplicesView, VertexSimplicesZIndex);
             VertexSimplicesView.MouseEnter += (sender, eventArgs) =>
             {
                 AfterVertexLeave.Stop();
@@ -33,7 +34,6 @@ namespace Diploma.UI.ViewModels.Hypergraph
             {
                 AfterVertexLeave.Start();
             };
-            VertexSimplicesView.MouseMove += new MouseEventHandler(onMouseMove);
             VertexSimplicesView.MouseUp += new MouseButtonEventHandler(onMouseUp);
             AfterVertexLeave.Elapsed += async (sender, eventArgs) =>
             {

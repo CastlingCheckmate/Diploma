@@ -43,4 +43,7 @@
     <BitmapImage x:Key="CloseTabButton"
                  UriSource="/Diploma.UI;component/Resources/CloseTabButton.bmp" />
 
+    <BitmapImage x:Key="SaveButton"
+                 UriSource="/Diploma.UI;component/Resources/SaveButton.bmp" />
+
 </ResourceDictionary>

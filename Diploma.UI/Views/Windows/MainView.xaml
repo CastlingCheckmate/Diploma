@@ -126,8 +126,16 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock x:Name="_header"
                                    Text="{Binding Header}" />
-                        <Image x:Name="_buttonImage"
-                               Margin="5,0,0,0">
+                        <Image x:Name="_saveButtonImage"
+                               Margin="5,0,0,0"
+                               Source="{StaticResource SaveButton}">
+                            <Image.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding SaveCommand}" />
+                            </Image.InputBindings>
+                        </Image>
+                        <Image x:Name="_actionButtonImage"
+                               Margin="2,0,0,0">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick"
                                               Command="{Binding ActionCommand}" />
@@ -141,19 +149,30 @@
                                 <Setter TargetName="_header"
                                         Property="Visibility"
                                         Value="Collapsed" />
-                                <Setter TargetName="_buttonImage"
+                                <Setter TargetName="_saveButtonImage"
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                                <Setter TargetName="_actionButtonImage"
                                         Property="Source"
                                         Value="{StaticResource NewTabButton}" />
-                                <Setter TargetName="_buttonImage"
+                                <Setter TargetName="_actionButtonImage"
                                         Property="Margin"
                                         Value="0" />
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAddNewTabTabItem}"
                                      Value="False">
-                            <Setter TargetName="_buttonImage"
+                            <Setter TargetName="_actionButtonImage"
                                     Property="Source"
                                     Value="{StaticResource CloseTabButton}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HypergraphViewModel}"
+                                     Value="{x:Null}">
+                            <DataTrigger.Setters>
+                                <Setter TargetName="_saveButtonImage"
+                                        Property="Opacity"
+                                        Value="0.25" />
+                            </DataTrigger.Setters>
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>

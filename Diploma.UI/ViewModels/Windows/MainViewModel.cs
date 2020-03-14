@@ -138,8 +138,7 @@ namespace Diploma.UI.ViewModels.Windows
 
         private void Quit()
         {
-            var result = MessageBox.Show(MessageBoxTypes.Question, DiplomaLocalization.Instance.QuitHeader,
-                DiplomaLocalization.Instance.QuitMessage, MessageBoxButtons.YesNo);
+            var result = MessageBox.Show(MessageBoxTypes.Question, DiplomaLocalization.Instance.QuitHeader, DiplomaLocalization.Instance.QuitMessage, MessageBoxButtons.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;

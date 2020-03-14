@@ -255,5 +255,8 @@
     <Resource Include="Resources\CloseTabButton.bmp" />
     <Resource Include="Resources\NewTabButton.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SaveButton.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
